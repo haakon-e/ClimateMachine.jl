@@ -60,6 +60,7 @@ function InterpolationConfiguration(
         vert_range = grid1d(
             _planet_radius,
             FT(_planet_radius + info.domain_height),
+            NoStretching(),
             nelem = info.nelem_vert,
         )
 

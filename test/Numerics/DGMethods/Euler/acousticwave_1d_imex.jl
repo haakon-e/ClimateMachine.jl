@@ -1,7 +1,7 @@
 using ClimateMachine
 using ClimateMachine.ConfigTypes
 using ClimateMachine.Mesh.Topologies:
-    StackedCubedSphereTopology, cubedshellwarp, grid1d
+    StackedCubedSphereTopology, cubedshellwarp, grid1d, NoStretching
 using ClimateMachine.Mesh.Grids:
     DiscontinuousSpectralElementGrid, VerticalDirection
 using ClimateMachine.Mesh.Filters
@@ -102,6 +102,7 @@ function run(
     vert_range = grid1d(
         _planet_radius,
         FT(_planet_radius + setup.domain_height),
+        NoStretching(),
         nelem = numelem_vert,
     )
     topology = StackedCubedSphereTopology(mpicomm, numelem_horz, vert_range)

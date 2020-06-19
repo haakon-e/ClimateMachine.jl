@@ -71,13 +71,13 @@ end
 end
 
 @testset "grid1d" begin
-    g = grid1d(0, 10, nelem = 10)
+    g = grid1d(0, 10, NoStretching(), nelem = 10)
     @test eltype(g) == Float64
     @test length(g) == 11
     @test g[1] == 0
     @test g[end] == 10
 
-    g = grid1d(10f0, 20f0, elemsize = 0.1)
+    g = grid1d(10f0, 20f0, NoStretching(), elemsize = 0.1)
     @test eltype(g) == Float32
     @test length(g) == 101
     @test g[1] == 10
@@ -90,6 +90,17 @@ end
     @test g[end] == 20
 
     g = grid1d(10f0, 20f0, SingleExponentialStretching(2.5f0), elemsize = 0.1)
+    @test eltype(g) == Float32
+    @test length(g) == 101
+    @test g[1] == 10
+    @test g[end] == 20
+
+    g = grid1d(
+        10f0,
+        20f0,
+        DoubleSidedSingleExponentialStretching(2.5f0),
+        elemsize = 0.1,
+    )
     @test eltype(g) == Float32
     @test length(g) == 101
     @test g[1] == 10

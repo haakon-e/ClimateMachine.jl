@@ -56,7 +56,7 @@ function create_topology(::Box{dim}, mpicomm, Ne, FT) where {dim}
 end
 
 function create_topology(::Sphere, mpicomm, Ne, FT)
-    vert_range = grid1d(FT(1), FT(2), nelem = Ne)
+    vert_range = grid1d(FT(1), FT(2), NoStretching(), nelem = Ne)
     StackedCubedSphereTopology(mpicomm, Ne, vert_range, boundary = (3, 3))
 end
 

@@ -259,6 +259,7 @@ function run_cubed_sphere_interpolation_test()
         vert_range = grid1d(
             _planet_radius,
             FT(_planet_radius + domain_height),
+            NoStretching(),
             nelem = numelem_vert,
         )
 

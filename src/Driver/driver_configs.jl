@@ -8,10 +8,9 @@
 # - SingleStackConfiguration
 #
 # User-customized configurations can use these as templates.
-
 using CLIMAParameters
 using CLIMAParameters.Planet: planet_radius
-
+using StaticArrays
 abstract type ConfigSpecificInfo end
 struct AtmosLESSpecificInfo <: ConfigSpecificInfo end
 struct AtmosGCMSpecificInfo{FT} <: ConfigSpecificInfo
@@ -131,14 +130,19 @@ function AtmosLESConfiguration(
     numerical_flux_first_order = RusanovNumericalFlux(),
     numerical_flux_second_order = CentralNumericalFluxSecondOrder(),
     numerical_flux_gradient = CentralNumericalFluxGradient(),
+    grid_stretching = SVector{3}(
+        NoStretching(),
+        NoStretching(),
+        NoStretching(),
+    ),
 ) where {FT <: AbstractFloat}
 
     print_model_info(model)
 
     brickrange = (
-        grid1d(xmin, xmax, elemsize = Δx * N),
-        grid1d(ymin, ymax, elemsize = Δy * N),
-        grid1d(zmin, zmax, elemsize = Δz * N),
+        grid1d(xmin, xmax, grid_stretching[1], elemsize = Δx * N),
+        grid1d(ymin, ymax, grid_stretching[2], elemsize = Δy * N),
+        grid1d(zmin, zmax, grid_stretching[3], elemsize = Δz * N),
     )
     topology = StackedBrickTopology(
         mpicomm,
@@ -216,6 +220,11 @@ function AtmosGCMConfiguration(
     numerical_flux_first_order = RusanovNumericalFlux(),
     numerical_flux_second_order = CentralNumericalFluxSecondOrder(),
     numerical_flux_gradient = CentralNumericalFluxGradient(),
+    grid_stretching = SVector{3}(
+        NoStretching(),
+        NoStretching(),
+        NoStretching(),
+    ),
 ) where {FT <: AbstractFloat}
 
     print_model_info(model)
@@ -224,6 +233,7 @@ function AtmosGCMConfiguration(
     vert_range = grid1d(
         _planet_radius,
         FT(_planet_radius + domain_height),
+        grid_stretching[3],
         nelem = nelem_vert,
     )
 
@@ -351,6 +361,11 @@ function SingleStackConfiguration(
     numerical_flux_first_order = RusanovNumericalFlux(),
     numerical_flux_second_order = CentralNumericalFluxSecondOrder(),
     numerical_flux_gradient = CentralNumericalFluxGradient(),
+    grid_stretching = SVector{3}(
+        NoStretching(),
+        NoStretching(),
+        NoStretching(),
+    ),
 ) where {FT <: AbstractFloat}
 
     print_model_info(model)
@@ -358,9 +373,9 @@ function SingleStackConfiguration(
     xmin, xmax = zero(FT), one(FT)
     ymin, ymax = zero(FT), one(FT)
     brickrange = (
-        grid1d(xmin, xmax, nelem = 1),
-        grid1d(ymin, ymax, nelem = 1),
-        grid1d(zmin, zmax, nelem = nelem_vert),
+        grid1d(xmin, xmax, grid_stretching[1], nelem = 1),
+        grid1d(ymin, ymax, grid_stretching[1], nelem = 1),
+        grid1d(zmin, zmax, grid_stretching[1], nelem = nelem_vert),
     )
     topology = StackedBrickTopology(
         mpicomm,

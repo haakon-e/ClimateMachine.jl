@@ -162,7 +162,7 @@ function run_test3(mpicomm, dim, Ne, N, FT, ArrayType)
     for l in 1:3
         Nhorz = 2^(l - 1) * base_Nhorz
         Nvert = 2^(l - 1) * base_Nvert
-        Rrange = grid1d(FT(Rinner), FT(Router); nelem = Nvert)
+        Rrange = grid1d(FT(Rinner), FT(Router), NoStretching(); nelem = Nvert)
         topl = StackedCubedSphereTopology(mpicomm, Nhorz, Rrange)
         grid = DiscontinuousSpectralElementGrid(
             topl,
