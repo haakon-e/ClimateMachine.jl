@@ -34,8 +34,52 @@ using Logging
 Initialisation helper for baroclinic-wave (channel flow) test case for iterative
 determination of η = p/pₛ coordinate for given z-altitude. 
 """
-function baroclinic_instability_cube(FT, (x,y,z), param_set)
 
+function baroclinic_instability_cube!(eta, temp, tolerance, (x,y,z),f0,beta0,u0,T0,gamma_lapse,gravity, R_gas, cp)
+  for niter = 1:200
+    FT    = eltype(y)
+    b     = FT(2)
+    Ly    = FT(6e6)  
+    y0    = FT(Ly/2)
+    b2    = b*b
+    #Get Mean Temperature
+    exp1  = R_gas*gamma_lapse/gravity
+    Tmean = T0*eta^exp1
+    phimean = T0*gravity/gamma_lapse * (FT(1) - eta^exp1)
+    logeta = log(eta)
+    fac1   = (f0-beta0*y0)*(y - FT(1/2)*Ly - Ly/2π * sin(2π*y/Ly))  
+    fac2   = FT(1/2)*beta0*(y^2 - Ly*y/π*sin(2π*y/Ly) - 
+                          FT(1/2)*(Ly/π)^2*cos(2π*y/Ly) - 
+                          Ly^2/3 - FT(1/2)*(Ly/π)^2)
+    fac3 = exp(-logeta*logeta/b2)
+    fac4 = exp(-logeta/b) 
+    ## fac4 applies a correction based on the required temp profile from Ullrich's paper
+    ## TODO: Verify if paper contains TYPO, use fac3 or fac4
+    ## Check for consistency 
+    phi_prime=FT(1/2)*u0*(fac1 + fac2)
+    geo_phi = phimean + phi_prime*fac3*logeta
+    temp = Tmean + phi_prime/R_gas*fac3*(2/b2*logeta*logeta - 1)
+    num  = -gravity*z + geo_phi
+    den  = -R_gas/(eta)*temp
+    deta = num/den
+    eta  = eta - deta
+    if (abs(deta) <= FT(tolerance))
+      break
+    elseif (abs(deta) > FT(tolerance)) && niter==100
+      @error "Initialisation: η convergence failure."
+      @show deta
+      break
+    end
+  end
+  return (eta, temp)
+end 
+
+
+function init_baroclinicwave!(bl, state, aux, (x, y, z), t)
+  ### Problem float-type
+  FT = eltype(state)
+  param_set = bl.param_set
+  
   ### Unpack CLIMAParameters
   _planet_radius = FT(planet_radius(param_set))
   gravity        = FT(grav(param_set))
@@ -62,33 +106,19 @@ function baroclinic_instability_cube(FT, (x,y,z), param_set)
   x0    = FT(2e7)
   p00   = FT(1e5)              ## Surface pressure
 
-  #Step 1: Get current coordinate value by unpacking nodal coordinates from aux state
+  ## Step 1: Get current coordinate value by unpacking nodal coordinates from aux state
   eta = FT(1e-7)
-  global geo_phi = FT(1.0)
-  global temp = FT(1.0)
-  @show(geo_phi, temp, "Before iterations")
+  temp = FT(300)
+  ## Step 2: Define functions for initial condition temperature and geopotential distributions
+  ## These are written in terms of the pressure coordinate η = p/pₛ
 
-  (geo_phi, temp, η) = baroclinic_iterations(geo_phi, temp, η, 
-
-  for n = 1:100 ## Begin convergence loop
-    baroclinic_instability_cube_functions!(geo_phi,temp,y,eta,f0,beta0,u0,T0,gamma_lapse, gravity, R_gas, cp)
-    num  = -gravity*z + geo_phi
-    den  = -R_gas/(eta)*temp
-    deta = num/den
-    eta  = eta - deta
-    if (abs(deta) <= FT(1e-10))
-        break
-    elseif (abs(deta) > FT(1e-10)) && n<100
-        continue
-    elseif (abs(deta) > FT(1e-10)) && n==100
-      @error "Baroclinic Instability Initialisation: η iterations did not converge."
-    end
-  end ## End convergence loop
-  @show(eta, "After iterations")
+  ### Unpack initial conditions (solved by iterating for η)
+  tolerance = FT(1e-9)
+  eta, temp = baroclinic_instability_cube!(eta, temp, tolerance, (x,y,z),f0,beta0,u0,T0,gamma_lapse,gravity, R_gas, cp)
   eta = min(eta,FT(1))
   eta = max(eta,FT(0))
   logeta = log(eta)
-  T=temp
+  T=FT(temp)
   press = p00*eta
   theta = T *(p00/press)^(R_gas/cp)
   rho = press/(R_gas*T)
@@ -102,54 +132,15 @@ function baroclinic_instability_cube(FT, (x,y,z), param_set)
   rc2 = (x-xc)^2 + (y-yc)^2
   du = up*exp(-rc2/Lp2)
     
-  ### Return u, du and combine those in the initial condition assignment. 
-  ### (For testing purposes we use these separately)
-  ### Returned quantities allow ClimateMachine state variables to be built
-  return rho, u, du, T
-end 
+  ### Primitive variables
+  u⃗ = SVector{3,FT}(u,0,0)
+  e_kin = FT(1/2)*sum(abs2.(u⃗))
+  e_pot = gravity * z
 
-function baroclinic_instability_cube_functions!(geo_phi, temp,y,eta,f0,beta0,u0,T0,gamma_lapse,gravity, R_gas, cp)
-  FT    = eltype(y)
-  b     = FT(2)
-  Ly    = FT(6e6)  
-  y0    = FT(Ly/2)
-  b2    = b*b
-  #Get Mean Temperature
-  exp1  = R_gas*gamma_lapse/gravity
-  Tmean = T0*eta^exp1
-  phimean = T0*gravity/gamma_lapse * (FT(1) - eta^exp1)
-
-  logeta = log(eta)
-  fac1   = (f0-beta0*y0)*(y - FT(1/2)*Ly - Ly/2π * sin(2π*y/Ly))  
-  fac2   = FT(1/2)*beta0*(y^2 - Ly*y/π*sin(2π*y/Ly) - 
-                        FT(1/2)*(Ly/π)^2*cos(2π*y/Ly) - 
-                        Ly^2/3 - FT(1/2)*(Ly/π)^2)
-  fac3 = exp(-logeta*logeta/b2)
-  phi_prime=FT(0.5)*u0*(fac1 + fac2)
-  geo_phi = phimean + phi_prime*fac3*logeta
-  temp = Tmean + phi_prime/R_gas*fac3*(2/b2*logeta*logeta - 1)
-  @show(geo_phi, temp, "Inside BICF")
-  return nothing
-end 
-
-function init_baroclinicwave!(bl, state, aux, (x, y, z), t)
-    ### Problem float-type
-    FT = eltype(state)
-    param_set = bl.param_set
-    gravity = FT(grav(param_set))
-
-    ### Unpack initial conditions (solved by iterating for η)
-    (rho, u, du, T) = baroclinic_instability_cube(FT, (x,y,z), param_set)
-    
-    ### Primitive variables
-    u⃗ = SVector{3,FT}(u,0,0)
-    e_kin = FT(1/2)*sum(abs2.(u⃗))
-    e_pot = gravity * z
-
-    ### Assign state variables for initial condition
-    state.ρ = rho
-    state.ρu = rho .* u⃗
-    state.ρe = rho * total_energy(param_set, e_kin, e_pot, T)
+  ### Assign state variables for initial condition
+  state.ρ = rho
+  state.ρu = rho .* u⃗
+  state.ρe = rho * total_energy(param_set, e_kin, e_pot, T)
 end
 
 function config_baroclinicwave(FT, N, resolution, xmax, ymax, zmax)
@@ -195,8 +186,8 @@ function config_baroclinicwave(FT, N, resolution, xmax, ymax, zmax)
     return config
 end
 
-function config_diagnostics(driver_config)
-
+function config_diagnostics(driver_config, FT)
+    
     boundaries = [
         FT(0.0) FT(0.0) FT(0.0)
         FT(4e7) FT(6e6) FT(30e3)
@@ -218,7 +209,13 @@ function config_diagnostics(driver_config)
         "1shours",
         driver_config.name,
     )
-    dump_dgngrp = setup_dump_state_and_aux_diagnostics(
+    state_dgngrp = setup_dump_state_diagnostics(
+        AtmosLESConfigType(),
+        "1shours",
+        driver_config.name,
+        interpol = interpol,
+    )
+    aux_dgngrp = setup_dump_aux_diagnostics(
         AtmosLESConfigType(),
         "1shours",
         driver_config.name,
@@ -226,8 +223,6 @@ function config_diagnostics(driver_config)
     )
     return ClimateMachine.DiagnosticsConfiguration([
         default_dgngrp,
-        core_dgngrp,
-        dump_dgngrp,
     ])
 end
 
@@ -244,8 +239,8 @@ function main()
     resolution = (Δx, Δy, Δz)
 
     # Prescribe domain parameters
-    xmax = FT(4e7)
-    ymax = FT(6e6)
+    xmax = FT(1e7)#FT(4e7)
+    ymax = FT(1e6)#FT(6e6)
     zmax = FT(30e3)
 
     t0 = FT(0)
@@ -264,7 +259,7 @@ function main()
         init_on_cpu = true,
         Courant_number = CFLmax,
     )
-    dgn_config = config_diagnostics(driver_config)
+    dgn_config = config_diagnostics(driver_config, FT)
 
     cbtmarfilter = GenericCallbacks.EveryXSimulationSteps(1) do (init = false)
         Filters.apply!(
@@ -313,7 +308,7 @@ function main()
     result = ClimateMachine.invoke!(
         solver_config;
         diagnostics_config = dgn_config,
-        user_callbacks = (cbtmarfilter, cb_check_cons, cbfilter),
+        user_callbacks = (cb_check_cons, cbfilter),
         check_euclidean_distance = true,
     )
 end
