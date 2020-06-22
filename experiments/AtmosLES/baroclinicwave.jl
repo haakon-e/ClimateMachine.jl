@@ -133,7 +133,7 @@ function init_baroclinicwave!(bl, state, aux, (x, y, z), t)
   du = up*exp(-rc2/Lp2)
     
   ### Primitive variables
-  u⃗ = SVector{3,FT}(u,0,0)
+  u⃗ = SVector{3,FT}(u+du,0,0)
   e_kin = FT(1/2)*sum(abs2.(u⃗))
   e_pot = gravity * z
 
