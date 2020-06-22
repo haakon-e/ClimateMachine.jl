@@ -239,8 +239,8 @@ function main()
     resolution = (Δx, Δy, Δz)
 
     # Prescribe domain parameters
-    xmax = FT(1e7)#FT(4e7)
-    ymax = FT(1e6)#FT(6e6)
+    xmax = FT(4e7)
+    ymax = FT(6e6)
     zmax = FT(30e3)
 
     t0 = FT(0)
