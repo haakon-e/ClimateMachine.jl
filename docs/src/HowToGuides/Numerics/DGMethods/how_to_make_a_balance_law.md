@@ -84,7 +84,7 @@ argument inside these methods behave as dictionaries, for example:
 ```julia
 struct MyModel <: BalanceLaw end
 
-function vars_state_conservative(m::MyModel, FT)
+function vars_state(m::MyModel, ::Conservative, FT)
     @vars begin
         ρ::FT
         T::FT
