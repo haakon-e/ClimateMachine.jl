@@ -408,8 +408,7 @@ horizontal and/or vertical reference directions.
 
         nstates = varsize(vars_Q)
         nfilterstates = number_state_filtered(target, FT)
-        nfilteraux =
-            isnothing(state_auxiliary) ? 0 : varsize(vars_state)
+        nfilteraux = isnothing(state_auxiliary) ? 0 : varsize(vars_state)
 
         # ugly workaround around problems with @private
         # hopefully will be soon fixed in KA

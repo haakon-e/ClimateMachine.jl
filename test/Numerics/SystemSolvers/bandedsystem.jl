@@ -8,8 +8,7 @@ using LinearAlgebra
 using Random
 using StaticArrays
 using ClimateMachine.BalanceLaws: BalanceLaw
-import ClimateMachine.BalanceLaws:
-    vars_state, number_state_conservative
+import ClimateMachine.BalanceLaws: vars_state, number_state_conservative
 using ClimateMachine.DGMethods:
     DGModel, init_ode_state, create_conservative_state
 using ClimateMachine.SystemSolvers: banded_matrix, banded_matrix_vector_product!

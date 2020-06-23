@@ -12,8 +12,7 @@ end
 
 vars_state(rem::RemainderModel, ::Conservative, FT) =
     vars_state(rem.main, Conservative(), FT)
-vars_state(rem::RemainderModel, vt::Gradient, FT) =
-    vars_state(rem.main, vt, FT)
+vars_state(rem::RemainderModel, vt::Gradient, FT) = vars_state(rem.main, vt, FT)
 vars_state(rem::RemainderModel, ::GradientFlux, FT) =
     vars_state(rem.main, GradientFlux(), FT)
 vars_state(rem::RemainderModel, ::Auxiliary, FT) =
