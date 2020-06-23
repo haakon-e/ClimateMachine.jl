@@ -28,7 +28,7 @@ using ClimateMachine.Atmos:
     Gravity,
     HydrostaticState,
     ConstantViscosityWithDivergence,
-    vars_state_conservative,
+    vars_state,
     soundspeed
 using ClimateMachine.Atmos
 using ClimateMachine.ODESolvers

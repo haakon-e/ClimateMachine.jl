@@ -26,10 +26,10 @@ using ClimateMachine.Atmos:
     NoPrecipitation,
     NoRadiation,
     ConstantViscosityWithDivergence,
-    vars_state_conservative
+    vars_state
 using ClimateMachine.Orientations: NoOrientation
 using ClimateMachine.VariableTemplates: @vars, Vars, flattenednames
-import ClimateMachine.Atmos: atmos_init_aux!, vars_state_auxiliary
+import ClimateMachine.Atmos: atmos_init_aux!, vars_state
 
 using CLIMAParameters
 using CLIMAParameters.Planet: kappa_d

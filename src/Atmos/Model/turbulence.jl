@@ -106,7 +106,7 @@ for the returned quantities.
 - `::TurbulenceClosure` = Struct identifier for turbulence closure model
 - `orientation` = `AtmosModel.orientation`
 - `param_set` = `AtmosModel.param_set`
-- `state` = Array of prognostic (state) variables. See `vars_state_conservative` in `AtmosModel`
+- `state` = Array of prognostic (state) variables. See `vars_state` in `AtmosModel`
 - `diffusive` = Array of diffusive variables
 - `aux` = Array of auxiliary variables
 - `t` = time

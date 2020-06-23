@@ -26,7 +26,7 @@ using StaticArrays
 using LinearAlgebra
 
 using ..VariableTemplates
-import ..BalanceLaws: BalanceLaw, vars_state_auxiliary
+import ..BalanceLaws: BalanceLaw, vars_state
 
 export Orientation, NoOrientation, FlatOrientation, SphericalOrientation
 

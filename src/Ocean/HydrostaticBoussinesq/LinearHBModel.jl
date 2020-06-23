@@ -26,12 +26,12 @@ end
 """
 vars_state(lm::LinearHBModel, ::Conservative, FT) =
     vars_state(lm.ocean, Conservative(), FT)
-vars_state(lm::LinearHBModel, ::Gradient, FT) =
-    vars_state_gradient(lm.ocean, FT)
+vars_state(lm::LinearHBModel, vt::Gradient, FT) =
+    vars_state(lm.ocean, vt, FT)
 vars_state(lm::LinearHBModel, ::GradientFlux, FT) =
     vars_state(lm.ocean, GradientFlux(), FT)
-vars_state(lm::LinearHBModel, ::Auxiliary, FT) =
-    vars_state_auxiliary(lm.ocean, FT)
+vars_state(lm::LinearHBModel, vt::Auxiliary, FT) =
+    vars_state(lm.ocean, vt, FT)
 vars_state(lm::LinearHBModel, ::VerticalIntegrals, FT) = @vars()
 
 """

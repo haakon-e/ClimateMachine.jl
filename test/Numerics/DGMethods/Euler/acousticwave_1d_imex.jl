@@ -29,8 +29,8 @@ using ClimateMachine.Atmos:
     NoRadiation,
     NTracers,
     ConstantViscosityWithDivergence,
-    vars_state_conservative,
-    vars_state_auxiliary,
+    vars_state,
+    vars_state,
     Gravity,
     HydrostaticState,
     AtmosAcousticGravityLinearModel

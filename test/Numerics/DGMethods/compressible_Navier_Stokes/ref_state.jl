@@ -35,7 +35,7 @@ import ClimateMachine.Atmos: MoistureModel, temperature, pressure, soundspeed
 init_state_conservative!(bl, state, aux, coords, t) = nothing
 
 # initial condition
-using ClimateMachine.Atmos: vars_state_auxiliary
+using ClimateMachine.Atmos: vars_state
 
 function run1(mpicomm, ArrayType, dim, topl, N, timeend, FT, dt)
 

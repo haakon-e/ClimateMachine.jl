@@ -16,11 +16,11 @@ using ..DGMethods.NumericalFluxes: RusanovNumericalFlux
 
 import ..DGMethods.NumericalFluxes: update_penalty!
 import ..DGMethods:
-    vars_state_conservative,
-    vars_state_auxiliary,
-    vars_state_gradient,
+    vars_state,
+    vars_state,
+    vars_state,
     vars_integrals,
-    vars_state_gradient_flux,
+    vars_state,
     vars_reverse_integrals,
     init_state_conservative!,
     init_state_auxiliary!,

@@ -25,7 +25,7 @@ using ..VariableTemplates
     ) where {T, dim, N}
 
 Return a dictionary whose keys are the `flattenednames()` of the variables
-specified in `vars` (as returned by e.g. `vars_state_conservative`), and
+specified in `vars` (as returned by e.g. `vars_state`), and
 whose values are arrays of the values for that variable along the vertical
 dimension in `Q`. Only a single element is expected in the horizontal as
 this is intended for the single stack configuration and `i` and `j` identify
@@ -120,7 +120,7 @@ end
     ) where {T, dim, N}
 
 Return a dictionary whose keys are the `flattenednames()` of the variables
-specified in `vars` (as returned by e.g. `vars_state_conservative`), and
+specified in `vars` (as returned by e.g. `vars_state`), and
 whose values are arrays of the horizontal averages for that variable along
 the vertical dimension in `Q`. Only a single element is expected in the
 horizontal as this is intended for the single stack configuration.
@@ -165,7 +165,7 @@ end
     ) where {T, dim, N}
 
 Return a dictionary whose keys are the `flattenednames()` of the variables
-specified in `vars` (as returned by e.g. `vars_state_conservative`), and
+specified in `vars` (as returned by e.g. `vars_state`), and
 whose values are arrays of the horizontal variance for that variable along
 the vertical dimension in `Q`. Only a single element is expected in the
 horizontal as this is intended for the single stack configuration.

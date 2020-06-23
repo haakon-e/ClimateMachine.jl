@@ -81,10 +81,10 @@ using ClimateMachine.SingleStackUtils
 #  provide implementations of these structs/methods)
 using ClimateMachine.BalanceLaws: BalanceLaw
 import ClimateMachine.BalanceLaws:
-    vars_state_auxiliary,
-    vars_state_conservative,
-    vars_state_gradient,
-    vars_state_gradient_flux,
+    vars_state,
+    vars_state,
+    vars_state,
+    vars_state,
     source!,
     flux_second_order!,
     flux_first_order!,
@@ -176,7 +176,7 @@ vars_state(::BurgersEquation, ::GradientFlux, FT) =
 # `init_state_conservative!`. Note that
 # - this method is only called at `t=0`
 # - `aux.z` and `aux.T` are available here because we've specified `z` and `T`
-# in `vars_state_auxiliary`
+# in `vars_state`
 function init_state_auxiliary!(
     m::BurgersEquation,
     aux::Vars,
@@ -189,7 +189,7 @@ end;
 # Specify the initial values in `state::Vars`. Note that
 # - this method is only called at `t=0`
 # - `state.ρ`, `state.ρu` and`state.ρcT` are available here because
-# we've specified `ρ`, `ρu` and `ρcT` in `vars_state_conservative`
+# we've specified `ρ`, `ρu` and `ρcT` in `vars_state`
 function init_state_conservative!(
     m::BurgersEquation,
     state::Vars,
@@ -228,7 +228,7 @@ end;
 
 # Compute/update all auxiliary variables at each node. Note that
 # - `aux.T` is available here because we've specified `T` in
-# `vars_state_auxiliary`
+# `vars_state`
 function heat_eq_nodal_update_aux!(
     m::BurgersEquation,
     state::Vars,
@@ -241,7 +241,7 @@ end;
 # Since we have second-order fluxes, we must tell `ClimateMachine` to compute
 # the gradient of `ρcT` and `u`. Here, we specify how `ρcT`, `u` are computed. Note that
 # `transform.ρcT` and `transform.u` are available here because we've specified `ρcT`
-# and `u`in `vars_state_gradient`
+# and `u`in `vars_state`
 function compute_gradient_argument!(
     m::BurgersEquation,
     transform::Vars,
@@ -256,9 +256,9 @@ end;
 # Specify where in `diffusive::Vars` to store the computed gradient from
 # `compute_gradient_argument!`. Note that:
 #  - `diffusive.μ∇u` is available here because we've specified `μ∇u` in
-#  `vars_state_gradient_flux`
+#  `vars_state`
 #  - `∇transform.u` is available here because we've specified `u` in
-#  `vars_state_gradient`
+#  `vars_state`
 #  - `diffusive.μ∇u` is built using an anisotropic diffusivity tensor
 function compute_gradient_flux!(
     m::BurgersEquation,
@@ -298,7 +298,7 @@ end;
 # Compute advective flux.
 # Note that:
 # - `state.ρu` is available here because we've specified `ρu` in
-# `vars_state_conservative`
+# `vars_state`
 function flux_first_order!(
     m::BurgersEquation,
     flux::Grad,
@@ -316,7 +316,7 @@ end;
 # Compute diffusive flux (e.g. ``F(μ, \mathbf{u}, t) = -μ∇\mathbf{u}`` in the original PDE).
 # Note that:
 # - `diffusive.μ∇u` is available here because we've specified `μ∇u` in
-# `vars_state_gradient_flux`
+# `vars_state`
 function flux_second_order!(
     m::BurgersEquation,
     flux::Grad,

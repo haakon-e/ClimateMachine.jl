@@ -3,10 +3,10 @@ using ClimateMachine.VariableTemplates
 using ClimateMachine.BalanceLaws: BalanceLaw
 
 import ClimateMachine.BalanceLaws:
-    vars_state_auxiliary,
-    vars_state_conservative,
-    vars_state_gradient,
-    vars_state_gradient_flux,
+    vars_state,
+    vars_state,
+    vars_state,
+    vars_state,
     flux_first_order!,
     flux_second_order!,
     source!,

@@ -32,11 +32,11 @@ using ClimateMachine.BalanceLaws:
     BalanceLaw, number_state_conservative, num_integrals
 
 import ClimateMachine.BalanceLaws:
-    vars_state_auxiliary,
-    vars_state_conservative,
-    vars_state_gradient,
+    vars_state,
+    vars_state,
+    vars_state,
     vars_gradient_laplacian,
-    vars_state_gradient_flux,
+    vars_state,
     vars_hyperdiffusive,
     vars_integrals,
     vars_reverse_integrals,

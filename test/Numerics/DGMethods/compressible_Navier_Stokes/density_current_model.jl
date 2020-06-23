@@ -21,7 +21,7 @@ using StaticArrays
 using Logging, Printf, Dates
 using ClimateMachine.VTK
 using Random
-using ClimateMachine.Atmos: vars_state_conservative, vars_state_auxiliary
+using ClimateMachine.Atmos: vars_state, vars_state
 
 using CLIMAParameters
 using CLIMAParameters.Planet: R_d, cp_d, cv_d, grav, MSLP
