@@ -65,7 +65,7 @@ function baroclinic_instability_cube!(eta, temp, tolerance, (x,y,z),f0,beta0,u0,
     eta  = eta - deta
     if (abs(deta) <= FT(tolerance))
       break
-    elseif (abs(deta) > FT(tolerance)) && niter==100
+    elseif (abs(deta) > FT(tolerance)) && niter==200
       @error "Initialisation: η convergence failure."
       @show deta
       break
@@ -91,7 +91,7 @@ function init_baroclinicwave!(bl, state, aux, (x, y, z), t)
   Lp    = FT(6e5)              ## Perturbation parameter (radius)
   Lp2   = Lp*Lp              
   xc    = FT(2e6)              ## Streamwise center of perturbation
-  yc    = FT(25e6)             ## Spanwise center of perturbation
+  yc    = FT(2.5e6)             ## Spanwise center of perturbation
   gamma_lapse = FT(5/1000)    ## Γ Lapse Rate
   Ω     = FT(7.292e-5)         ## Rotation rate [rad/s]
   f0    = 2Ω/sqrt(2)           ## 
@@ -113,10 +113,22 @@ function init_baroclinicwave!(bl, state, aux, (x, y, z), t)
   ## These are written in terms of the pressure coordinate η = p/pₛ
 
   ### Unpack initial conditions (solved by iterating for η)
-  tolerance = FT(1e-9)
-  eta, temp = baroclinic_instability_cube!(eta, temp, tolerance, (x,y,z),f0,beta0,u0,T0,gamma_lapse,gravity, R_gas, cp)
+  tolerance = FT(1e-10)
+  eta, temp = baroclinic_instability_cube!(eta, 
+                                           temp, 
+                                           tolerance, 
+                                           (x,y,z),
+                                           f0, 
+                                           beta0, 
+                                           u0, 
+                                           T0, 
+                                           gamma_lapse, 
+                                           gravity, 
+                                           R_gas, 
+                                           cp)
   eta = min(eta,FT(1))
   eta = max(eta,FT(0))
+  ### η = p/p_s
   logeta = log(eta)
   T=FT(temp)
   press = p00*eta
@@ -126,7 +138,7 @@ function init_baroclinicwave!(bl, state, aux, (x, y, z), t)
   rhoref = p00/(T0*R_gas) * (1 - gamma_lapse*z/T0)^(gravity/(R_gas*gamma_lapse) - 1)
 
   ### Balanced Flow
-  u = -u0*(sin(π*y/Ly))^2  * logeta * exp(-logeta*logeta/b2)
+  u = -u0*(sinpi(y/Ly))^2  * logeta * exp(-logeta*logeta/b2)
 
   ### Perturbation of the balanced flow
   rc2 = (x-xc)^2 + (y-yc)^2
@@ -232,14 +244,14 @@ function main()
     # DG polynomial order
     N = 4
     # Domain resolution and size
-    Δx = FT(1e5)
+    Δx = FT(4e5) 
     Δy = FT(7.5e4)
     Δz = FT(1.25e3)
 
     resolution = (Δx, Δy, Δz)
 
     # Prescribe domain parameters
-    xmax = FT(1e7)
+    xmax = FT(4e7) 
     ymax = FT(6e6)
     zmax = FT(30e3)
 
@@ -249,7 +261,7 @@ function main()
     # For the test we set this to == 30 minutes
     days = FT(86400)
     timeend = FT(15days)
-    CFLmax = FT(0.10)
+    CFLmax = FT(0.1)
 
     driver_config = config_baroclinicwave(FT, N, resolution, xmax, ymax, zmax)
     solver_config = ClimateMachine.SolverConfiguration(
@@ -258,7 +270,8 @@ function main()
         driver_config,
         init_on_cpu = true,
         Courant_number = CFLmax,
-        diffdir = HorizontalDirection(),
+        diffdir = HorizontalDirection(), ### Set only Horizontal viscosity component
+        CFL_direction = VerticalDirection(), 
     )
     dgn_config = config_diagnostics(driver_config, FT)
 
@@ -272,7 +285,8 @@ function main()
         nothing
     end
     
-    filterorder = 64
+    ### TODO: Filter in VerticalDirection() only ? 
+    filterorder = 32
     filter = ExponentialFilter(solver_config.dg.grid, 0, filterorder)
     cbfilter = GenericCallbacks.EveryXSimulationSteps(1) do
         Filters.apply!(
