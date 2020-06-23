@@ -14,11 +14,6 @@ BalanceLaw
 
 ```@docs
 vars_state
-vars_state
-vars_state
-vars_integrals
-vars_reverse_integrals
-vars_state
 ```
 
 ## Initial condition methods

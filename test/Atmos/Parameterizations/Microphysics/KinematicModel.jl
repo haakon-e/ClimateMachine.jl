@@ -90,9 +90,6 @@ using ClimateMachine.BalanceLaws: BalanceLaw
 
 import ClimateMachine.BalanceLaws:
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
     init_state_conservative!,
     init_state_auxiliary!,
     update_auxiliary_state!,

@@ -10,10 +10,6 @@ using CLIMAParameters.Planet: grav
 import ..BalanceLaws:
     BalanceLaw,
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
-    vars_integrals,
     flux_first_order!,
     flux_second_order!,
     source!,

@@ -10,21 +10,8 @@ struct RemainderModel{M, S} <: BalanceLaw
     subs::S
 end
 
-vars_state(rem::RemainderModel, ::Conservative, FT) =
-    vars_state(rem.main, Conservative(), FT)
-vars_state(rem::RemainderModel, vt::Gradient, FT) = vars_state(rem.main, vt, FT)
-vars_state(rem::RemainderModel, ::GradientFlux, FT) =
-    vars_state(rem.main, GradientFlux(), FT)
-vars_state(rem::RemainderModel, ::Auxiliary, FT) =
-    vars_state(rem.main, Auxiliary(), FT)
-vars_state(rem::RemainderModel, ::UpwardIntegrals, FT) =
-    vars_state(rem.main, UpwardIntegrals(), FT)
-vars_state(rem::RemainderModel, ::DownwardIntegrals, FT) =
-    vars_state(rem.main, UpwardIntegrals(), FT)
-vars_state(rem::RemainderModel, ::GradientLaplacian, FT) =
-    vars_state(rem.main, GradientLaplacian(), FT)
-vars_state(rem::RemainderModel, ::Hyperdiffusive, FT) =
-    vars_hyperdiffusive(rem.main, FT)
+vars_state(rem::RemainderModel, vt::AbstractStateType, FT) =
+    vars_state(rem.main, vt, FT)
 
 update_auxiliary_state!(
     dg::DGModel,

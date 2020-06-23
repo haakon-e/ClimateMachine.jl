@@ -30,7 +30,6 @@ using ..BalanceLaws:
     vars_state,
     number_state_auxiliary,
     vars_state,
-    vars_state,
     number_state_gradient_flux
 using ..Mesh.Interpolation
 using ..MPIStateArrays

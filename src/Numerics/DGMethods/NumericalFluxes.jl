@@ -17,9 +17,6 @@ using KernelAbstractions.Extras: @unroll
 import ...BalanceLaws:
     BalanceLaw,
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
     boundary_state!,
     wavespeed,
     flux_first_order!,
@@ -29,8 +26,6 @@ import ...BalanceLaws:
     number_state_gradient,
     compute_gradient_argument!,
     num_gradient_laplacian,
-    vars_gradient_laplacian,
-    vars_hyperdiffusive,
     transform_post_gradient_laplacian!
 
 """

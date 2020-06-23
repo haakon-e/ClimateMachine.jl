@@ -14,10 +14,6 @@ using Logging
 using ClimateMachine.BalanceLaws: BalanceLaw
 import ClimateMachine.BalanceLaws:
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
-    vars_integrals,
     integral_load_auxiliary_state!,
     flux_first_order!,
     flux_second_order!,
@@ -31,7 +27,6 @@ import ClimateMachine.BalanceLaws:
     init_state_auxiliary!,
     init_state_conservative!,
     integral_set_auxiliary_state!,
-    vars_reverse_integrals,
     reverse_integral_load_auxiliary_state!,
     reverse_integral_set_auxiliary_state!
 

@@ -30,7 +30,6 @@ using ClimateMachine.Atmos:
     NTracers,
     ConstantViscosityWithDivergence,
     vars_state,
-    vars_state,
     Gravity,
     HydrostaticState,
     AtmosAcousticGravityLinearModel
