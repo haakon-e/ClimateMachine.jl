@@ -10,12 +10,12 @@ using ..VariableTemplates
 using ..MPIStateArrays
 using ..Mesh.Filters: apply!
 using ..Mesh.Grids: VerticalDirection
-using ..BalanceLaws: BalanceLaw
+using ..BalanceLaws
 import ..BalanceLaws: nodal_update_auxiliary_state!
 using ..DGMethods.NumericalFluxes: RusanovNumericalFlux
 
 import ..DGMethods.NumericalFluxes: update_penalty!
-import ..DGMethods:
+import ..BalanceLaws:
     vars_state,
     init_state_conservative!,
     init_state_auxiliary!,
