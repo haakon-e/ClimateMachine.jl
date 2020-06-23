@@ -35,6 +35,7 @@ export BalanceLaw,
     reverse_integral_load_auxiliary_state!,
     reverse_integral_set_auxiliary_state!
 
+include("state_types.jl")
 include("interface.jl")
 
 end
