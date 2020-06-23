@@ -249,7 +249,7 @@ function main()
     # For the test we set this to == 30 minutes
     days = FT(86400)
     timeend = FT(15days)
-    CFLmax = FT(0.90)
+    CFLmax = FT(0.20)
 
     driver_config = config_baroclinicwave(FT, N, resolution, xmax, ymax, zmax)
     solver_config = ClimateMachine.SolverConfiguration(
@@ -258,6 +258,7 @@ function main()
         driver_config,
         init_on_cpu = true,
         Courant_number = CFLmax,
+        diffdir = HorizontalDirection(),
     )
     dgn_config = config_diagnostics(driver_config, FT)
 
