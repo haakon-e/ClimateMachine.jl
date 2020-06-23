@@ -1711,7 +1711,7 @@ See [`BalanceLaw`](@ref) for usage.
 
                 integral_load_auxiliary_state!(
                     balance_law,
-                    Vars{vars_state(balance_law, VerticalIntegrals(), FT)}(view(
+                    Vars{vars_state(balance_law, UpwardIntegrals(), FT)}(view(
                         local_kernel,
                         :,
                         k,
@@ -1753,7 +1753,7 @@ See [`BalanceLaw`](@ref) for usage.
                         :,
                         e,
                     )),
-                    Vars{vars_state(balance_law, VerticalIntegrals(), FT)}(view(
+                    Vars{vars_state(balance_law, UpwardIntegrals(), FT)}(view(
                         local_kernel,
                         :,
                         k,
@@ -1800,7 +1800,7 @@ end
         et = nvertelem + (eh - 1) * nvertelem
         reverse_integral_load_auxiliary_state!(
             balance_law,
-            Vars{vars_state(balance_law, ReverseIntegrals(), FT)}(l_T),
+            Vars{vars_state(balance_law, DownwardIntegrals(), FT)}(l_T),
             Vars{vars_state(balance_law, Conservative(), FT)}(view(
                 state,
                 ijk,
@@ -1822,7 +1822,7 @@ end
                 ijk = i + Nq * ((j - 1) + Nqj * (k - 1))
                 reverse_integral_load_auxiliary_state!(
                     balance_law,
-                    Vars{vars_state(balance_law, ReverseIntegrals(), FT)}(l_V),
+                    Vars{vars_state(balance_law, DownwardIntegrals(), FT)}(l_V),
                     Vars{vars_state(balance_law, Conservative(), FT)}(view(
                         state,
                         ijk,
@@ -1845,7 +1845,7 @@ end
                         :,
                         e,
                     )),
-                    Vars{vars_state(balance_law, ReverseIntegrals(), FT)}(l_V),
+                    Vars{vars_state(balance_law, DownwardIntegrals(), FT)}(l_V),
                 )
             end
         end

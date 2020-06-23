@@ -41,20 +41,20 @@ given a float type `FT`.
 vars_state(::BalanceLaw, ::Hyperdiffusive, FT) = @vars()
 
 """
-    vars_state(::L, ::VerticalIntegrals, FT)
+    vars_state(::L, ::UpwardIntegrals, FT)
 
 a tuple of symbols containing variables to be integrated
 along a vertical stack, given a float type `FT`.
 """
-vars_state(::BalanceLaw, ::VerticalIntegrals, FT) = @vars()
+vars_state(::BalanceLaw, ::UpwardIntegrals, FT) = @vars()
 
 """
-    vars_state(::L, ::ReverseIntegrals, FT)
+    vars_state(::L, ::DownwardIntegrals, FT)
 
 a tuple of symbols containing variables to be integrated
 along a vertical stack, in reverse, given a float type `FT`.
 """
-vars_state(::BalanceLaw, ::ReverseIntegrals, FT) = @vars()
+vars_state(::BalanceLaw, ::DownwardIntegrals, FT) = @vars()
 
 """
     init_state_conservative!(
@@ -303,9 +303,9 @@ num_gradient_laplacian(m::BalanceLaw, FT) =
 num_hyperdiffusive(m::BalanceLaw, FT) =
     varsize(vars_state(m, Hyperdiffusive(), FT))
 num_integrals(m::BalanceLaw, FT) =
-    varsize(vars_state(m, VerticalIntegrals(), FT))
+    varsize(vars_state(m, UpwardIntegrals(), FT))
 num_reverse_integrals(m::BalanceLaw, FT) =
-    varsize(vars_state(m, ReverseIntegrals(), FT))
+    varsize(vars_state(m, DownwardIntegrals(), FT))
 
 ### split explicit functions
 function initialize_states! end

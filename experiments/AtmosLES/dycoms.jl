@@ -44,8 +44,8 @@ import ClimateMachine.Atmos: flux_second_order!
 # -------------------- Radiation Model -------------------------- #
 vars_state(::RadiationModel, ::Conservative, FT) = @vars()
 vars_state(::RadiationModel, ::Auxiliary, FT) = @vars()
-vars_state(::RadiationModel, ::VerticalIntegrals, FT) = @vars()
-vars_state(::RadiationModel, ::ReverseIntegrals, FT) = @vars()
+vars_state(::RadiationModel, ::UpwardIntegrals, FT) = @vars()
+vars_state(::RadiationModel, ::DownwardIntegrals, FT) = @vars()
 
 function atmos_nodal_update_auxiliary_state!(
     ::RadiationModel,
@@ -109,7 +109,7 @@ end
 
 vars_state(m::DYCOMSRadiation, ::Auxiliary, FT) = @vars(Rad_flux::FT)
 
-vars_state(m::DYCOMSRadiation, ::VerticalIntegrals, FT) =
+vars_state(m::DYCOMSRadiation, ::UpwardIntegrals, FT) =
     @vars(attenuation_coeff::FT)
 function integral_load_auxiliary_state!(
     m::DYCOMSRadiation,
@@ -129,7 +129,7 @@ function integral_set_auxiliary_state!(
     aux.∫dz.radiation.attenuation_coeff = integral
 end
 
-vars_state(m::DYCOMSRadiation, ::ReverseIntegrals, FT) =
+vars_state(m::DYCOMSRadiation, ::DownwardIntegrals, FT) =
     @vars(attenuation_coeff::FT)
 function reverse_integral_load_auxiliary_state!(
     m::DYCOMSRadiation,

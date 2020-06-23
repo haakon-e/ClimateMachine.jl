@@ -78,8 +78,8 @@ vars_state(lm::AtmosLinearModel, ::Gradient, FT) = @vars()
 vars_state(lm::AtmosLinearModel, ::GradientFlux, FT) = @vars()
 vars_state(lm::AtmosLinearModel, ::Auxiliary, FT) =
     vars_state(lm.atmos, Auxiliary(), FT)
-vars_state(lm::AtmosLinearModel, ::VerticalIntegrals, FT) = @vars()
-vars_state(lm::AtmosLinearModel, ::ReverseIntegrals, FT) = @vars()
+vars_state(lm::AtmosLinearModel, ::UpwardIntegrals, FT) = @vars()
+vars_state(lm::AtmosLinearModel, ::DownwardIntegrals, FT) = @vars()
 
 
 function update_auxiliary_state!(

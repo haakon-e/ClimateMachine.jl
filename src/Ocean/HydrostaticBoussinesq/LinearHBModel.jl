@@ -32,7 +32,7 @@ vars_state(lm::LinearHBModel, ::GradientFlux, FT) =
     vars_state(lm.ocean, GradientFlux(), FT)
 vars_state(lm::LinearHBModel, vt::Auxiliary, FT) =
     vars_state(lm.ocean, vt, FT)
-vars_state(lm::LinearHBModel, ::VerticalIntegrals, FT) = @vars()
+vars_state(lm::LinearHBModel, ::UpwardIntegrals, FT) = @vars()
 
 """
     No integration, hyperbolic flux, or source terms

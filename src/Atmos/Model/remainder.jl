@@ -18,10 +18,10 @@ vars_state(rem::RemainderModel, ::GradientFlux, FT) =
     vars_state(rem.main, GradientFlux(), FT)
 vars_state(rem::RemainderModel, ::Auxiliary, FT) =
     vars_state(rem.main, Auxiliary(), FT)
-vars_state(rem::RemainderModel, ::VerticalIntegrals, FT) =
-    vars_state(rem.main, VerticalIntegrals(), FT)
-vars_state(rem::RemainderModel, ::ReverseIntegrals, FT) =
-    vars_state(rem.main, VerticalIntegrals(), FT)
+vars_state(rem::RemainderModel, ::UpwardIntegrals, FT) =
+    vars_state(rem.main, UpwardIntegrals(), FT)
+vars_state(rem::RemainderModel, ::DownwardIntegrals, FT) =
+    vars_state(rem.main, UpwardIntegrals(), FT)
 vars_state(rem::RemainderModel, ::GradientLaplacian, FT) =
     vars_state(rem.main, GradientLaplacian(), FT)
 vars_state(rem::RemainderModel, ::Hyperdiffusive, FT) =
