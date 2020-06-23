@@ -28,7 +28,7 @@ using ..MPIStateArrays: MPIStateArray
 using ..Mesh.Grids:
     VerticalDirection, HorizontalDirection, min_node_distance, EveryDirection
 
-using ClimateMachine.BalanceLaws:
+using ClimateMachine.BalanceLaws
     BalanceLaw, number_state_conservative, num_integrals
 
 import ClimateMachine.BalanceLaws:
