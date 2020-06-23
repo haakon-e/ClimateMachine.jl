@@ -48,8 +48,7 @@ vars_state(m::IntegralTestModel, ::Auxiliary, T) = @vars(
     rev_b::T
 )
 
-vars_state(::IntegralTestModel, ::Conservative, T) = @vars()
-vars_state(::IntegralTestModel, ::GradientFlux, T) = @vars()
+vars_state(::IntegralTestModel, ::AbstractStateType, T) = @vars()
 
 flux_first_order!(::IntegralTestModel, _...) = nothing
 flux_second_order!(::IntegralTestModel, _...) = nothing

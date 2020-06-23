@@ -3,10 +3,7 @@ export DryModel, EquilMoist
 #### Moisture component in atmosphere model
 abstract type MoistureModel end
 
-vars_state(::MoistureModel, ::Conservative, FT) = @vars()
-vars_state(::MoistureModel, ::Gradient, FT) = @vars()
-vars_state(::MoistureModel, ::GradientFlux, FT) = @vars()
-vars_state(::MoistureModel, ::Auxiliary, FT) = @vars()
+vars_state(::MoistureModel, ::AbstractStateType, FT) = @vars()
 
 function atmos_nodal_update_auxiliary_state!(
     ::MoistureModel,

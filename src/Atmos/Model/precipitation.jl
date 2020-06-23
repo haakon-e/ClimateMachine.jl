@@ -5,10 +5,7 @@ export NoPrecipitation, Rain
 
 using ..Microphysics
 
-vars_state(::PrecipitationModel, ::Conservative, FT) = @vars()
-vars_state(::PrecipitationModel, ::Gradient, FT) = @vars()
-vars_state(::PrecipitationModel, ::GradientFlux, FT) = @vars()
-vars_state(::PrecipitationModel, ::Auxiliary, FT) = @vars()
+vars_state(::PrecipitationModel, ::AbstractStateType, FT) = @vars()
 
 function atmos_nodal_update_auxiliary_state!(
     ::PrecipitationModel,

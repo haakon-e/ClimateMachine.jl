@@ -33,9 +33,7 @@ be defined for a turbulence model.
 abstract type TurbulenceClosure end
 
 
-vars_state(::TurbulenceClosure, ::Gradient, FT) = @vars()
-vars_state(::TurbulenceClosure, ::GradientFlux, FT) = @vars()
-vars_state(::TurbulenceClosure, ::Auxiliary, FT) = @vars()
+vars_state(::TurbulenceClosure, ::AbstractStateType, FT) = @vars()
 
 function atmos_init_aux!(
     ::TurbulenceClosure,
