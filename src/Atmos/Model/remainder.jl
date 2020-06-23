@@ -93,13 +93,13 @@ compute_gradient_flux!(
 function wavespeed(rem::RemainderModel, nM, state::Vars, aux::Vars, t::Real)
     FT = eltype(state)
 
-    ws = fill(0, MVector{number_state_conservative(rem.main, FT), FT})
-    rs = fill(0, MVector{number_state_conservative(rem.main, FT), FT})
+    ws = fill(0, MVector{number_states(rem.main, Conservative(), FT), FT})
+    rs = fill(0, MVector{number_states(rem.main, Conservative(), FT), FT})
 
     ws .= wavespeed(rem.main, nM, state, aux, t)
 
     for sub in rem.subs
-        num_state = static(number_state_conservative(sub, Float32))
+        num_state = static(number_states(sub, Conservative(), Float32))
         @inbounds rs[static(1):num_state] .+= wavespeed(sub, nM, state, aux, t)
     end
 

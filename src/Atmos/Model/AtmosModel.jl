@@ -499,7 +499,7 @@ end
     ss = soundspeed(m, m.moisture, state, aux)
 
     FT = typeof(state.ρ)
-    ws = fill(uN + ss, MVector{number_state_conservative(m, FT), FT})
+    ws = fill(uN + ss, MVector{number_states(m, Conservative(), FT), FT})
     vars_ws = Vars{vars_state(m, Conservative(), FT)}(ws)
 
     wavespeed_tracers!(m.tracers, vars_ws, nM, state, aux, t)
@@ -518,8 +518,10 @@ function update_auxiliary_state!(
     FT = eltype(Q)
     state_auxiliary = dg.state_auxiliary
 
-    if num_integrals(m, FT) > 0
+    if number_states(m, UpwardIntegrals(), FT) > 0
         indefinite_stack_integral!(dg, m, Q, state_auxiliary, t, elems)
+    end
+    if number_states(m, DownwardIntegrals(), FT) > 0
         reverse_indefinite_stack_integral!(dg, m, Q, state_auxiliary, t, elems)
     end
 

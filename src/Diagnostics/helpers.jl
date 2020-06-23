@@ -41,7 +41,7 @@ end
 function extract_state_conservative(dg, state_conservative, ijk, e)
     bl = dg.balance_law
     FT = eltype(state_conservative)
-    num_state_conservative = number_state_conservative(bl, FT)
+    num_state_conservative = number_states(bl, Conservative(), FT)
     local_state_conservative = MArray{Tuple{num_state_conservative}, FT}(undef)
     for s in 1:num_state_conservative
         local_state_conservative[s] = state_conservative[ijk, s, e]
@@ -51,7 +51,7 @@ end
 function extract_state_auxiliary(dg, state_auxiliary, ijk, e)
     bl = dg.balance_law
     FT = eltype(state_auxiliary)
-    num_state_auxiliary = number_state_auxiliary(bl, FT)
+    num_state_auxiliary = number_states(bl, Auxiliary(), FT)
     local_state_auxiliary = MArray{Tuple{num_state_auxiliary}, FT}(undef)
     for s in 1:num_state_auxiliary
         local_state_auxiliary[s] = state_auxiliary[ijk, s, e]
@@ -61,7 +61,7 @@ end
 function extract_state_gradient_flux(dg, state_gradient_flux, ijk, e)
     bl = dg.balance_law
     FT = eltype(state_gradient_flux)
-    num_state_gradient_flux = number_state_gradient_flux(bl, FT)
+    num_state_gradient_flux = number_states(bl, GradientFlux(), FT)
     local_state_gradient_flux =
         MArray{Tuple{num_state_gradient_flux}, FT}(undef)
     for s in 1:num_state_gradient_flux

@@ -26,7 +26,7 @@ import KernelAbstractions: CPU
 using ..ConfigTypes
 using ..DGMethods
 using ..BalanceLaws:
-    number_state_conservative,
+    number_states,
     vars_state,
     number_state_auxiliary,
     vars_state,

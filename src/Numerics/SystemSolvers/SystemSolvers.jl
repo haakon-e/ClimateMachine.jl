@@ -9,7 +9,7 @@ using ..Mesh.Topologies
 using ..DGMethods
 using ..DGMethods: DGModel
 using ..BalanceLaws:
-    BalanceLaw, number_state_conservative, number_state_gradient_flux
+    BalanceLaw, number_states, number_state_gradient_flux
 
 using Adapt
 using CuArrays

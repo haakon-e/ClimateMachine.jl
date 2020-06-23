@@ -21,13 +21,15 @@ function DGModel(
     numerical_flux_first_order,
     numerical_flux_second_order,
     numerical_flux_gradient;
-    state_auxiliary = create_auxiliary_state(balance_law, grid),
-    state_gradient_flux = create_gradient_state(balance_law, grid),
-    states_higher_order = create_higher_order_states(balance_law, grid),
+    state_auxiliary = create_state(balance_law, grid, Auxiliary()),
+    state_gradient_flux = create_state(balance_law, grid, Gradient()),
+    states_higher_order = (create_state(balance_law, grid, GradientLaplacian()),
+        create_state(balance_law, grid, Hyperdiffusive())),
     direction = EveryDirection(),
     diffusion_direction = direction,
     modeldata = nothing,
 )
+    state_auxiliary = init_state(state_auxiliary, balance_law, grid)
     DGModel(
         balance_law,
         grid,
@@ -69,9 +71,9 @@ function (dg::DGModel)(
     state_auxiliary = dg.state_auxiliary
 
     FT = eltype(state_conservative)
-    num_state_conservative = number_state_conservative(balance_law, FT)
-    num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-    nhyperviscstate = num_hyperdiffusive(balance_law, FT)
+    num_state_conservative = number_states(balance_law, Conservative(), FT)
+    num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+    nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
     num_state_tendency = size(tendency, 2)
 
     @assert num_state_conservative ≤ num_state_tendency
@@ -525,7 +527,7 @@ function init_ode_state(dg::DGModel, args...; init_on_cpu = false)
     balance_law = dg.balance_law
     grid = dg.grid
 
-    state_conservative = create_conservative_state(balance_law, grid)
+    state_conservative = create_state(balance_law, grid, Conservative())
 
     topology = grid.topology
     Np = dofs_per_element(grid)
@@ -587,7 +589,7 @@ function restart_ode_state(dg::DGModel, state_data; init_on_cpu = false)
     bl = dg.balance_law
     grid = dg.grid
 
-    state = create_conservative_state(bl, grid)
+    state = create_state(bl, grid, Conservative())
     state .= state_data
 
     device = arraytype(dg.grid) <: Array ? CPU() : CUDA()
@@ -600,7 +602,7 @@ function restart_ode_state(dg::DGModel, state_data; init_on_cpu = false)
 end
 
 function restart_auxiliary_state(bl, grid, aux_data)
-    state_auxiliary = create_auxiliary_state(bl, grid)
+    state_auxiliary = create_state(bl, grid, Auxiliary())
     state_auxiliary .= aux_data
     return state_auxiliary
 end
@@ -886,7 +888,7 @@ function MPIStateArrays.MPIStateArray(dg::DGModel)
     balance_law = dg.balance_law
     grid = dg.grid
 
-    state_conservative = create_conservative_state(balance_law, grid)
+    state_conservative = create_state(balance_law, grid, Conservative())
 
     return state_conservative
 end

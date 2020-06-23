@@ -290,21 +290,11 @@ Compute reverse indefinite integral along stack.
 function reverse_indefinite_stack_integral! end
 
 # Internal methods
-number_state_conservative(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Conservative(), FT))
-number_state_auxiliary(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Auxiliary(), FT))
-number_state_gradient(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Gradient(), FT))
-number_state_gradient_flux(m::BalanceLaw, FT) =
-    varsize(vars_state(m, GradientFlux(), FT))
-num_gradient_laplacian(m::BalanceLaw, FT) =
-    varsize(vars_state(m, GradientLaplacian(), FT))
-num_hyperdiffusive(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Hyperdiffusive(), FT))
-num_integrals(m::BalanceLaw, FT) = varsize(vars_state(m, UpwardIntegrals(), FT))
-num_reverse_integrals(m::BalanceLaw, FT) =
-    varsize(vars_state(m, DownwardIntegrals(), FT))
+number_states(m::BalanceLaw, vt::AbstractStateTypes, FT) =
+    varsize(vars_state(m, vt, FT))
+
+rank_multiplier(vt::AbstractStateTypes) = 1
+rank_multiplier(vt::GradientLaplacian) = 3
 
 ### split explicit functions
 function initialize_states! end

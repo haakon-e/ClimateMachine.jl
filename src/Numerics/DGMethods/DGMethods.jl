@@ -13,9 +13,9 @@ using ..Courant
 using ..BalanceLaws:
     BalanceLaw,
     vars_state,
-    number_state_conservative,
+    number_states,
     number_state_gradient_flux,
-    number_state_conservative,
+    number_states,
     number_state_auxiliary,
     number_state_gradient,
     num_gradient_laplacian,

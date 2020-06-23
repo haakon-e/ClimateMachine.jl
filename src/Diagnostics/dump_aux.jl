@@ -40,7 +40,7 @@ function dump_aux_collect(dgngrp, currtime)
     iaux = similar(
         dg.state_auxiliary.data,
         interpol.Npl,
-        number_state_auxiliary(bl, FT),
+        number_states(bl, Auxiliary(), FT),
     )
     interpolate_local!(interpol, dg.state_auxiliary.data, iaux)
 
