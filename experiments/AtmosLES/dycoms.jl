@@ -109,7 +109,8 @@ end
 
 vars_state(m::DYCOMSRadiation, ::Auxiliary, FT) = @vars(Rad_flux::FT)
 
-vars_state(m::DYCOMSRadiation, ::VerticalIntegrals, FT) = @vars(attenuation_coeff::FT)
+vars_state(m::DYCOMSRadiation, ::VerticalIntegrals, FT) =
+    @vars(attenuation_coeff::FT)
 function integral_load_auxiliary_state!(
     m::DYCOMSRadiation,
     integrand::Vars,
@@ -128,7 +129,8 @@ function integral_set_auxiliary_state!(
     aux.∫dz.radiation.attenuation_coeff = integral
 end
 
-vars_state(m::DYCOMSRadiation, ::ReverseIntegrals, FT) = @vars(attenuation_coeff::FT)
+vars_state(m::DYCOMSRadiation, ::ReverseIntegrals, FT) =
+    @vars(attenuation_coeff::FT)
 function reverse_integral_load_auxiliary_state!(
     m::DYCOMSRadiation,
     integrand::Vars,

@@ -1224,7 +1224,9 @@ end
             Vars{vars_state(balance_law, Conservative(), FT)}(
                 local_state_conservative⁻,
             ),
-            Vars{vars_state(balance_law, Auxiliary(), FT)}(local_state_auxiliary⁻),
+            Vars{vars_state(balance_law, Auxiliary(), FT)}(
+                local_state_auxiliary⁻,
+            ),
             t,
         )
 
@@ -1244,7 +1246,9 @@ end
             Vars{vars_state(balance_law, Conservative(), FT)}(
                 local_state_conservative⁺,
             ),
-            Vars{vars_state(balance_law, Auxiliary(), FT)}(local_state_auxiliary⁺),
+            Vars{vars_state(balance_law, Auxiliary(), FT)}(
+                local_state_auxiliary⁺,
+            ),
             t,
         )
 
@@ -1378,7 +1382,9 @@ end
             Vars{vars_state(balance_law, Conservative(), FT)}(
                 local_state_conservative⁻,
             ),
-            Vars{vars_state(balance_law, Auxiliary(), FT)}(local_state_auxiliary⁻),
+            Vars{vars_state(balance_law, Auxiliary(), FT)}(
+                local_state_auxiliary⁻,
+            ),
             t,
         )
 
@@ -1434,7 +1440,9 @@ end
         init_state_conservative!(
             balance_law,
             Vars{vars_state(balance_law, Conservative(), FT)}(l_state),
-            Vars{vars_state(balance_law, Auxiliary(), FT)}(local_state_auxiliary),
+            Vars{vars_state(balance_law, Auxiliary(), FT)}(
+                local_state_auxiliary,
+            ),
             coords,
             args...,
         )
@@ -1481,7 +1489,9 @@ See [`BalanceLaw`](@ref) for usage.
 
         init_state_auxiliary!(
             balance_law,
-            Vars{vars_state(balance_law, Auxiliary(), FT)}(local_state_auxiliary),
+            Vars{vars_state(balance_law, Auxiliary(), FT)}(
+                local_state_auxiliary,
+            ),
             LocalGeometry(Val(polyorder), vgeo, n, e),
         )
 
@@ -2620,7 +2630,9 @@ end
             Vars{vars_state(balance_law, Conservative(), FT)}(
                 local_state_conservative,
             ),
-            Vars{vars_state(balance_law, Auxiliary(), FT)}(local_state_auxiliary),
+            Vars{vars_state(balance_law, Auxiliary(), FT)}(
+                local_state_auxiliary,
+            ),
             Vars{vars_state(balance_law, GradientFlux(), FT)}(
                 local_state_gradient_flux,
             ),

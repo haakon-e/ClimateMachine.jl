@@ -316,14 +316,18 @@ function reverse_indefinite_stack_integral! end
 # Internal methods
 number_state_conservative(m::BalanceLaw, FT) =
     varsize(vars_state(m, Conservative(), FT))
-number_state_auxiliary(m::BalanceLaw, FT) = varsize(vars_state(m, Auxiliary(), FT))
-number_state_gradient(m::BalanceLaw, FT) = varsize(vars_state(m, Gradient(), FT))
+number_state_auxiliary(m::BalanceLaw, FT) =
+    varsize(vars_state(m, Auxiliary(), FT))
+number_state_gradient(m::BalanceLaw, FT) =
+    varsize(vars_state(m, Gradient(), FT))
 number_state_gradient_flux(m::BalanceLaw, FT) =
     varsize(vars_state(m, GradientFlux(), FT))
 num_gradient_laplacian(m::BalanceLaw, FT) =
     varsize(vars_state(m, GradientLaplacian(), FT))
-num_hyperdiffusive(m::BalanceLaw, FT) = varsize(vars_state(m, Hyperdiffusive(), FT))
-num_integrals(m::BalanceLaw, FT) = varsize(vars_state(m, VerticalIntegrals(), FT))
+num_hyperdiffusive(m::BalanceLaw, FT) =
+    varsize(vars_state(m, Hyperdiffusive(), FT))
+num_integrals(m::BalanceLaw, FT) =
+    varsize(vars_state(m, VerticalIntegrals(), FT))
 num_reverse_integrals(m::BalanceLaw, FT) =
     varsize(vars_state(m, ReverseIntegrals(), FT))
 

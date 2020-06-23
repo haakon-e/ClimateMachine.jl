@@ -34,7 +34,8 @@ using ClimateMachine.Mesh.Geometry: LocalGeometry
 
 struct VarsTestModel{dim} <: BalanceLaw end
 
-vars_state(::VarsTestModel, ::Conservative, T) = @vars(x::T, coord::SVector{3, T})
+vars_state(::VarsTestModel, ::Conservative, T) =
+    @vars(x::T, coord::SVector{3, T})
 vars_state(m::VarsTestModel, ::Auxiliary, T) =
     @vars(coord::SVector{3, T}, polynomial::T)
 vars_state(m::VarsTestModel, ::GradientFlux, T) = @vars()

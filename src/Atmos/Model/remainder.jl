@@ -12,16 +12,20 @@ end
 
 vars_state(rem::RemainderModel, ::Conservative, FT) =
     vars_state(rem.main, Conservative(), FT)
-vars_state(rem::RemainderModel, ::Gradient, FT) = vars_state_gradient(rem.main, FT)
+vars_state(rem::RemainderModel, ::Gradient, FT) =
+    vars_state_gradient(rem.main, FT)
 vars_state(rem::RemainderModel, ::GradientFlux, FT) =
     vars_state(rem.main, GradientFlux(), FT)
 vars_state(rem::RemainderModel, ::Auxiliary, FT) =
     vars_state(rem.main, Auxiliary(), FT)
-vars_state(rem::RemainderModel, ::VerticalIntegrals, FT) = vars_state(rem.main, VerticalIntegrals(), FT)
-vars_state(rem::RemainderModel, ::ReverseIntegrals, FT) = vars_state(rem.main, VerticalIntegrals(), FT)
+vars_state(rem::RemainderModel, ::VerticalIntegrals, FT) =
+    vars_state(rem.main, VerticalIntegrals(), FT)
+vars_state(rem::RemainderModel, ::ReverseIntegrals, FT) =
+    vars_state(rem.main, VerticalIntegrals(), FT)
 vars_state(rem::RemainderModel, ::GradientLaplacian, FT) =
     vars_state(rem.main, GradientLaplacian(), FT)
-vars_state(rem::RemainderModel, ::Hyperdiffusive, FT) = vars_hyperdiffusive(rem.main, FT)
+vars_state(rem::RemainderModel, ::Hyperdiffusive, FT) =
+    vars_hyperdiffusive(rem.main, FT)
 
 update_auxiliary_state!(
     dg::DGModel,

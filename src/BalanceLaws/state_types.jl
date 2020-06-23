@@ -10,4 +10,3 @@ struct Hyperdiffusive <: AbstractStateType end
 struct VerticalIntegrals <: AbstractStateType end
 struct ReverseVerticalIntegrals <: AbstractStateType end
 # struct HorizontalIntegrals <: AbstractStateType end
-
