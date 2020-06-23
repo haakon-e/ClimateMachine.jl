@@ -232,14 +232,14 @@ function main()
     # DG polynomial order
     N = 4
     # Domain resolution and size
-    Δx = FT(100000)
-    Δy = FT(75000)
-    Δz = FT(1250)
+    Δx = FT(1e5)
+    Δy = FT(7.5e4)
+    Δz = FT(1.25e3)
 
     resolution = (Δx, Δy, Δz)
 
     # Prescribe domain parameters
-    xmax = FT(4e7)
+    xmax = FT(1e7)
     ymax = FT(6e6)
     zmax = FT(30e3)
 
@@ -249,7 +249,7 @@ function main()
     # For the test we set this to == 30 minutes
     days = FT(86400)
     timeend = FT(15days)
-    CFLmax = FT(0.20)
+    CFLmax = FT(0.10)
 
     driver_config = config_baroclinicwave(FT, N, resolution, xmax, ymax, zmax)
     solver_config = ClimateMachine.SolverConfiguration(
