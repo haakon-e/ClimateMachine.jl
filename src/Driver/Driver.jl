@@ -17,7 +17,7 @@ using ..SystemSolvers
 using ..ConfigTypes
 using ..Diagnostics
 using ..DGMethods
-using ..BalanceLaws: BalanceLaw, vars_state, vars_state, update_auxiliary_state!
+using ..BalanceLaws: BalanceLaw, vars_state, update_auxiliary_state!
 using ..DGMethods.NumericalFluxes
 using ..HydrostaticBoussinesq
 using ..Mesh.Grids
