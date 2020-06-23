@@ -281,7 +281,7 @@ function atmos_gcm_default_collect(dgngrp::DiagnosticsGroup, currtime)
         )
 
         @visitI nlong nlat nlevel begin
-            statei = Vars{vars_state_conservative(atmos, FT)}(view(
+            statei = Vars{vars_state(atmos, Conservative(), FT)}(view(
                 all_state_data,
                 lo,
                 la,

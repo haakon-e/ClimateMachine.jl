@@ -219,14 +219,14 @@ function atmos_refstate_perturbations_collect(
         )
 
         @visitI nlong nlat nlevel begin
-            statei = Vars{vars_state_conservative(atmos, FT)}(view(
+            statei = Vars{vars_state(atmos, Conservative(), FT)}(view(
                 all_state_data,
                 lo,
                 la,
                 le,
                 :,
             ))
-            auxi = Vars{vars_state_auxiliary(atmos, FT)}(view(
+            auxi = Vars{vars_state(atmos, Auxiliary(), FT)}(view(
                 all_aux_data,
                 lo,
                 la,

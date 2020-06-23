@@ -41,10 +41,10 @@ end
 
 struct PoissonModel{dim} <: BalanceLaw end
 
-vars_state_auxiliary(::PoissonModel, T) = @vars(rhs_ϕ::T)
-vars_state_conservative(::PoissonModel, T) = @vars(ϕ::T)
-vars_state_gradient(::PoissonModel, T) = @vars(ϕ::T)
-vars_state_gradient_flux(::PoissonModel, T) = @vars(∇ϕ::SVector{3, T})
+vars_state(::PoissonModel, ::Auxiliary, T) = @vars(rhs_ϕ::T)
+vars_state(::PoissonModel, ::Conservative, T) = @vars(ϕ::T)
+vars_state(::PoissonModel, ::Gradient, T) = @vars(ϕ::T)
+vars_state(::PoissonModel, ::GradientFlux, T) = @vars(∇ϕ::SVector{3, T})
 
 boundary_state!(nf, bl::PoissonModel, _...) = nothing
 

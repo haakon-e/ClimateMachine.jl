@@ -193,9 +193,9 @@ function run(
             outprefix,
             Q,
             dg,
-            flattenednames(vars_state_conservative(model, FT)),
+            flattenednames(vars_state(model, Conservative(), FT)),
             dg.state_auxiliary,
-            flattenednames(vars_state_auxiliary(model, FT)),
+            flattenednames(vars_state(model, Auxiliary(), FT)),
         )
         step[1] += 1
         nothing

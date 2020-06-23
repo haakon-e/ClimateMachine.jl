@@ -122,7 +122,7 @@ end
 HBModel = HydrostaticBoussinesqModel
 
 """
-    vars_state_conservative(::HBModel)
+    vars_state(::HBModel, ::Conservative)
 
 prognostic variables evolved forward in time
 
@@ -130,7 +130,7 @@ u = (u,v) = (zonal velocity, meridional velocity)
 η = sea surface height
 θ = temperature
 """
-function vars_state_conservative(m::HBModel, T)
+function vars_state(m::HBModel, ::Conservative, T)
     @vars begin
         u::SVector{2, T}
         η::T # real a 2-D variable TODO: should be 2D
@@ -150,7 +150,7 @@ function init_state_conservative!(m::HBModel, Q::Vars, A::Vars, coords, t)
 end
 
 """
-    vars_state_auxiliary(::HBModel)
+    vars_state(::HBModel, ::Auxiliary)
 helper variables for computation
 
 second half is because there is no dedicated integral kernels
@@ -164,7 +164,7 @@ first half of these are fields that are used for computation
 y = north-south coordinate
 
 """
-function vars_state_auxiliary(m::HBModel, T)
+function vars_state(m::HBModel, ::Auxiliary, T)
     @vars begin
         y::T     # y-coordinate of the box
         w::T     # ∫(-∇⋅u)
@@ -185,12 +185,12 @@ function init_state_auxiliary!(m::HBModel, A::Vars, geom::LocalGeometry)
 end
 
 """
-    vars_state_gradient(::HBModel)
+    vars_state(::HBModel, ::Gradient)
 
 variables that you want to take a gradient of
 these are just copies in our model
 """
-function vars_state_gradient(m::HBModel, T)
+function vars_state(m::HBModel, ::Gradient, T)
     @vars begin
         ∇u::SVector{2, T}
         ∇θ::T
@@ -218,12 +218,12 @@ this computation is done pointwise at each nodal point
 end
 
 """
-    vars_state_gradient_flux(::HBModel)
+    vars_state(::HBModel, ::GradientFlux, FT)
 
 the output of the gradient computations
 multiplies ∇u by viscosity tensor and ∇θ by the diffusivity tensor
 """
-function vars_state_gradient_flux(m::HBModel, T)
+function vars_state(m::HBModel, ::GradientFlux, T)
     @vars begin
         ν∇u::SMatrix{3, 2, T, 6}
         κ∇θ::SVector{3, T}
@@ -294,7 +294,7 @@ end
 location to store integrands for bottom up integrals
 ∇hu = the horizontal divegence of u, e.g. dw/dz
 """
-function vars_integrals(m::HBModel, T)
+function vars_state(m::HBModel, ::VerticalIntegrals, T)
     @vars begin
         ∇hu::T
         αᵀθ::T
@@ -349,7 +349,7 @@ end
 location to store integrands for top down integrals
 αᵀθ = density perturbation
 """
-function vars_reverse_integrals(m::HBModel, T)
+function vars_state(m::HBModel, ::ReverseIntegrals, T)
     @vars begin
         αᵀθ::T
     end
@@ -638,8 +638,8 @@ function update_auxiliary_state_gradient!(
     # [1] to convert from range to integer
     # copy_stack_field_down! doesn't like ranges
     # eventually replace this with a reshape and broadcast
-    index_w = varsindex(vars_state_auxiliary(m, FT), :w)[1]
-    index_wz0 = varsindex(vars_state_auxiliary(m, FT), :wz0)[1]
+    index_w = varsindex(vars_state(m, Auxiliary(), FT), :w)[1]
+    index_wz0 = varsindex(vars_state(m, Auxiliary(), FT), :wz0)[1]
     copy_stack_field_down!(dg, m, A, index_w, index_wz0, elems)
 
     return true

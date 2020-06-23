@@ -64,22 +64,22 @@ end
 
 abstract type AtmosLinearModel <: BalanceLaw end
 
-function vars_state_conservative(lm::AtmosLinearModel, FT)
+function vars_state(lm::AtmosLinearModel, ::Conservative, FT)
     @vars begin
         ρ::FT
         ρu::SVector{3, FT}
         ρe::FT
-        turbulence::vars_state_conservative(lm.atmos.turbulence, FT)
-        hyperdiffusion::vars_state_conservative(lm.atmos.hyperdiffusion, FT)
-        moisture::vars_state_conservative(lm.atmos.moisture, FT)
+        turbulence::vars_state(lm.atmos.turbulence, Conservative(), FT)
+        hyperdiffusion::vars_state(lm.atmos.hyperdiffusion, Conservative(), FT)
+        moisture::vars_state(lm.atmos.moisture, Conservative(), FT)
     end
 end
-vars_state_gradient(lm::AtmosLinearModel, FT) = @vars()
-vars_state_gradient_flux(lm::AtmosLinearModel, FT) = @vars()
-vars_state_auxiliary(lm::AtmosLinearModel, FT) =
-    vars_state_auxiliary(lm.atmos, FT)
-vars_integrals(lm::AtmosLinearModel, FT) = @vars()
-vars_reverse_integrals(lm::AtmosLinearModel, FT) = @vars()
+vars_state(lm::AtmosLinearModel, ::Gradient, FT) = @vars()
+vars_state(lm::AtmosLinearModel, ::GradientFlux, FT) = @vars()
+vars_state(lm::AtmosLinearModel, ::Auxiliary, FT) =
+    vars_state(lm.atmos, Auxiliary(), FT)
+vars_state(lm::AtmosLinearModel, ::VerticalIntegrals, FT) = @vars()
+vars_state(lm::AtmosLinearModel, ::ReverseIntegrals, FT) = @vars()
 
 
 function update_auxiliary_state!(

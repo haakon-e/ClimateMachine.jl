@@ -41,11 +41,11 @@ using ClimateMachine.Mesh.Geometry: LocalGeometry
 
 struct IntegralTestModel{dim} <: BalanceLaw end
 
-vars_reverse_integrals(::IntegralTestModel, T) = @vars(a::T, b::T)
-vars_integrals(::IntegralTestModel, T) = @vars(a::T, b::T)
-vars_state_auxiliary(m::IntegralTestModel, T) = @vars(
-    int::vars_integrals(m, T),
-    rev_int::vars_reverse_integrals(m, T),
+vars_state(::IntegralTestModel, ::ReverseIntegrals, T) = @vars(a::T, b::T)
+vars_state(::IntegralTestModel, ::VerticalIntegrals, T) = @vars(a::T, b::T)
+vars_state(m::IntegralTestModel, ::Auxiliary, T) = @vars(
+    int::vars_state(m, VerticalIntegrals(), T),
+    rev_int::vars_state(m, ReverseIntegrals(), T),
     coord::SVector{3, T},
     a::T,
     b::T,
@@ -53,8 +53,8 @@ vars_state_auxiliary(m::IntegralTestModel, T) = @vars(
     rev_b::T
 )
 
-vars_state_conservative(::IntegralTestModel, T) = @vars()
-vars_state_gradient_flux(::IntegralTestModel, T) = @vars()
+vars_state(::IntegralTestModel, ::Conservative, T) = @vars()
+vars_state(::IntegralTestModel, ::GradientFlux, T) = @vars()
 
 flux_first_order!(::IntegralTestModel, _...) = nothing
 flux_second_order!(::IntegralTestModel, _...) = nothing

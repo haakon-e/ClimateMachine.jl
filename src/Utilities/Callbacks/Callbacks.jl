@@ -141,8 +141,8 @@ function vtk(vtk_opt, solver_config, output_dir)
             )
             outprefix = joinpath(output_dir, vprefix)
 
-            statenames = flattenednames(vars_state_conservative(bl, FT))
-            auxnames = flattenednames(vars_state_auxiliary(bl, FT))
+            statenames = flattenednames(vars_state(bl, Conservative(), FT))
+            auxnames = flattenednames(vars_state(bl, Auxiliary(), FT))
 
             writevtk(outprefix, Q, dg, statenames, dg.state_auxiliary, auxnames)
 

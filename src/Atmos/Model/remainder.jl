@@ -10,18 +10,18 @@ struct RemainderModel{M, S} <: BalanceLaw
     subs::S
 end
 
-vars_state_conservative(rem::RemainderModel, FT) =
-    vars_state_conservative(rem.main, FT)
-vars_state_gradient(rem::RemainderModel, FT) = vars_state_gradient(rem.main, FT)
-vars_state_gradient_flux(rem::RemainderModel, FT) =
-    vars_state_gradient_flux(rem.main, FT)
-vars_state_auxiliary(rem::RemainderModel, FT) =
-    vars_state_auxiliary(rem.main, FT)
-vars_integrals(rem::RemainderModel, FT) = vars_integrals(rem.main, FT)
-vars_reverse_integrals(rem::RemainderModel, FT) = vars_integrals(rem.main, FT)
-vars_gradient_laplacian(rem::RemainderModel, FT) =
-    vars_gradient_laplacian(rem.main, FT)
-vars_hyperdiffusive(rem::RemainderModel, FT) = vars_hyperdiffusive(rem.main, FT)
+vars_state(rem::RemainderModel, ::Conservative, FT) =
+    vars_state(rem.main, Conservative(), FT)
+vars_state(rem::RemainderModel, ::Gradient, FT) = vars_state_gradient(rem.main, FT)
+vars_state(rem::RemainderModel, ::GradientFlux, FT) =
+    vars_state(rem.main, GradientFlux(), FT)
+vars_state(rem::RemainderModel, ::Auxiliary, FT) =
+    vars_state(rem.main, Auxiliary(), FT)
+vars_state(rem::RemainderModel, ::VerticalIntegrals, FT) = vars_state(rem.main, VerticalIntegrals(), FT)
+vars_state(rem::RemainderModel, ::ReverseIntegrals, FT) = vars_state(rem.main, VerticalIntegrals(), FT)
+vars_state(rem::RemainderModel, ::GradientLaplacian, FT) =
+    vars_state(rem.main, GradientLaplacian(), FT)
+vars_state(rem::RemainderModel, ::Hyperdiffusive, FT) = vars_hyperdiffusive(rem.main, FT)
 
 update_auxiliary_state!(
     dg::DGModel,

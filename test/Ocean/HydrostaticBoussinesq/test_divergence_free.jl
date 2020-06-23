@@ -89,11 +89,11 @@ function test_divergence_free(; imex::Bool = false, BC = nothing)
 
     result = ClimateMachine.invoke!(solver_config)
 
-    maxQ = Vars{vars_state_conservative(driver_config.bl, FT)}(maximum(
+    maxQ = Vars{vars_state(driver_config.bl, Conservative(), FT)}(maximum(
         solver_config.Q,
         dims = (1, 3),
     ))
-    minQ = Vars{vars_state_conservative(driver_config.bl, FT)}(minimum(
+    minQ = Vars{vars_state(driver_config.bl, Conservative(), FT)}(minimum(
         solver_config.Q,
         dims = (1, 3),
     ))

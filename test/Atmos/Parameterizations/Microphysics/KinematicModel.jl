@@ -167,9 +167,9 @@ function KinematicModel{FT}(
     return KinematicModel{FT, typeof.(atmos)...}(atmos...)
 end
 
-vars_state_gradient(m::KinematicModel, FT) = @vars()
+vars_state(m::KinematicModel, ::Gradient, FT) = @vars()
 
-vars_state_gradient_flux(m::KinematicModel, FT) = @vars()
+vars_state(m::KinematicModel, ::GradientFlux, FT) = @vars()
 
 function init_state_auxiliary!(
     m::KinematicModel,

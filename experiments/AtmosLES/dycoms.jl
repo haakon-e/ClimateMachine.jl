@@ -42,10 +42,10 @@ import ClimateMachine.BalanceLaws: boundary_state!
 import ClimateMachine.Atmos: flux_second_order!
 
 # -------------------- Radiation Model -------------------------- #
-vars_state_conservative(::RadiationModel, FT) = @vars()
-vars_state_auxiliary(::RadiationModel, FT) = @vars()
-vars_integrals(::RadiationModel, FT) = @vars()
-vars_reverse_integrals(::RadiationModel, FT) = @vars()
+vars_state(::RadiationModel, ::Conservative, FT) = @vars()
+vars_state(::RadiationModel, ::Auxiliary, FT) = @vars()
+vars_state(::RadiationModel, ::VerticalIntegrals, FT) = @vars()
+vars_state(::RadiationModel, ::ReverseIntegrals, FT) = @vars()
 
 function atmos_nodal_update_auxiliary_state!(
     ::RadiationModel,
@@ -107,9 +107,9 @@ struct DYCOMSRadiation{FT} <: RadiationModel
     F_1::FT
 end
 
-vars_state_auxiliary(m::DYCOMSRadiation, FT) = @vars(Rad_flux::FT)
+vars_state(m::DYCOMSRadiation, ::Auxiliary, FT) = @vars(Rad_flux::FT)
 
-vars_integrals(m::DYCOMSRadiation, FT) = @vars(attenuation_coeff::FT)
+vars_state(m::DYCOMSRadiation, ::VerticalIntegrals, FT) = @vars(attenuation_coeff::FT)
 function integral_load_auxiliary_state!(
     m::DYCOMSRadiation,
     integrand::Vars,
@@ -128,7 +128,7 @@ function integral_set_auxiliary_state!(
     aux.∫dz.radiation.attenuation_coeff = integral
 end
 
-vars_reverse_integrals(m::DYCOMSRadiation, FT) = @vars(attenuation_coeff::FT)
+vars_state(m::DYCOMSRadiation, ::ReverseIntegrals, FT) = @vars(attenuation_coeff::FT)
 function reverse_integral_load_auxiliary_state!(
     m::DYCOMSRadiation,
     integrand::Vars,

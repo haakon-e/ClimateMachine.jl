@@ -16,7 +16,7 @@ Subtypes `L` should define the methods below
 abstract type BalanceLaw end # PDE part
 
 """
-    vars_state_conservative(::L, FT)
+    vars_state(::L, ::Conservative, FT)
 
 a tuple of symbols containing the state variables
 given a float type `FT`.
@@ -24,7 +24,7 @@ given a float type `FT`.
 function vars_state_conservative end
 
 """
-    vars_state_auxiliary(::L, FT)
+    vars_state(::L, ::Auxiliary, FT)
 
 a tuple of symbols containing the auxiliary variables
 given a float type `FT`.
@@ -32,7 +32,7 @@ given a float type `FT`.
 function vars_state_auxiliary end
 
 """
-    vars_state_gradient(::L, FT)
+    vars_state(::L, ::Gradient, FT)
 
 a tuple of symbols containing the transformed variables
 of which gradients are computed given a float type `FT`.
@@ -40,7 +40,7 @@ of which gradients are computed given a float type `FT`.
 function vars_state_gradient end
 
 """
-    vars_state_gradient_flux(::L, FT)
+    vars_state(::L, ::GradientFlux, FT)
 
 a tuple of symbols containing the diffusive variables
 given a float type `FT`.
@@ -48,37 +48,37 @@ given a float type `FT`.
 function vars_state_gradient_flux end
 
 """
-    vars_gradient_laplacian(::L, FT)
+    vars_state(::L, ::GradientLaplacian, FT)
 
 a tuple of symbols containing the transformed variables
 of which gradients of laplacian are computed, they must
 be a subset of `vars_state_gradient`, given a float type `FT`.
 """
-vars_gradient_laplacian(::BalanceLaw, FT) = @vars()
+vars_state(::BalanceLaw, ::GradientLaplacian, FT) = @vars()
 
 """
-    vars_hyperdiffusive(::L, FT)
+    vars_state(::L, ::Hyperdiffusive, FT)
 
 a tuple of symbols containing the hyperdiffusive variables
 given a float type `FT`.
 """
-vars_hyperdiffusive(::BalanceLaw, FT) = @vars()
+vars_state(::BalanceLaw, ::Hyperdiffusive, FT) = @vars()
 
 """
-    vars_integrals(::L, FT)
+    vars_state(::L, ::VerticalIntegrals, FT)
 
 a tuple of symbols containing variables to be integrated
 along a vertical stack, given a float type `FT`.
 """
-vars_integrals(::BalanceLaw, FT) = @vars()
+vars_state(::BalanceLaw, ::VerticalIntegrals, FT) = @vars()
 
 """
-    vars_reverse_integrals(::L, FT)
+    vars_state(::L, ::ReverseIntegrals, FT)
 
 a tuple of symbols containing variables to be integrated
 along a vertical stack, in reverse, given a float type `FT`.
 """
-vars_reverse_integrals(::BalanceLaw, FT) = @vars()
+vars_state(::BalanceLaw, ::ReverseIntegrals, FT) = @vars()
 
 """
     init_state_conservative!(
@@ -315,17 +315,17 @@ function reverse_indefinite_stack_integral! end
 
 # Internal methods
 number_state_conservative(m::BalanceLaw, FT) =
-    varsize(vars_state_conservative(m, FT))
-number_state_auxiliary(m::BalanceLaw, FT) = varsize(vars_state_auxiliary(m, FT))
-number_state_gradient(m::BalanceLaw, FT) = varsize(vars_state_gradient(m, FT))
+    varsize(vars_state(m, Conservative(), FT))
+number_state_auxiliary(m::BalanceLaw, FT) = varsize(vars_state(m, Auxiliary(), FT))
+number_state_gradient(m::BalanceLaw, FT) = varsize(vars_state(m, Gradient(), FT))
 number_state_gradient_flux(m::BalanceLaw, FT) =
-    varsize(vars_state_gradient_flux(m, FT))
+    varsize(vars_state(m, GradientFlux(), FT))
 num_gradient_laplacian(m::BalanceLaw, FT) =
-    varsize(vars_gradient_laplacian(m, FT))
-num_hyperdiffusive(m::BalanceLaw, FT) = varsize(vars_hyperdiffusive(m, FT))
-num_integrals(m::BalanceLaw, FT) = varsize(vars_integrals(m, FT))
+    varsize(vars_state(m, GradientLaplacian(), FT))
+num_hyperdiffusive(m::BalanceLaw, FT) = varsize(vars_state(m, Hyperdiffusive(), FT))
+num_integrals(m::BalanceLaw, FT) = varsize(vars_state(m, VerticalIntegrals(), FT))
 num_reverse_integrals(m::BalanceLaw, FT) =
-    varsize(vars_reverse_integrals(m, FT))
+    varsize(vars_state(m, ReverseIntegrals(), FT))
 
 ### split explicit functions
 function initialize_states! end

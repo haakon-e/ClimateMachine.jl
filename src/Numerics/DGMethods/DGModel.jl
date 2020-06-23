@@ -899,8 +899,8 @@ function create_hypervisc_indexmap(balance_law::BalanceLaw)
         collect(Iterators.Flatten(_getvars.(fields, fieldtypes(T))))
     end
 
-    gradvars = vars_state_gradient(balance_law, Int)
-    gradlapvars = vars_gradient_laplacian(balance_law, Int)
+    gradvars = vars_state(balance_law, Gradient(), Int)
+    gradlapvars = vars_state(balance_law, GradientLaplacian(), Int)
     indices = Vars{gradvars}(1:varsize(gradvars))
     SVector{varsize(gradlapvars)}(_getvars(indices, gradlapvars))
 end

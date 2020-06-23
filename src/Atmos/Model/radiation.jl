@@ -2,10 +2,10 @@ export RadiationModel, NoRadiation
 
 abstract type RadiationModel end
 
-vars_state_conservative(::RadiationModel, FT) = @vars()
-vars_state_auxiliary(::RadiationModel, FT) = @vars()
-vars_integrals(::RadiationModel, FT) = @vars()
-vars_reverse_integrals(::RadiationModel, FT) = @vars()
+vars_state(::RadiationModel, ::Conservative, FT) = @vars()
+vars_state(::RadiationModel, ::Auxiliary, FT) = @vars()
+vars_state(::RadiationModel, ::VerticalIntegrals, FT) = @vars()
+vars_state(::RadiationModel, ::ReverseIntegrals, FT) = @vars()
 
 function atmos_nodal_update_auxiliary_state!(
     ::RadiationModel,

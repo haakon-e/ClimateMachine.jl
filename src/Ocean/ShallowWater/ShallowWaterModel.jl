@@ -55,27 +55,27 @@ end
 
 SWModel = ShallowWaterModel
 
-function vars_state_conservative(m::SWModel, T)
+function vars_state(m::SWModel, ::Conservative, T)
     @vars begin
         η::T
         U::SVector{2, T}
     end
 end
 
-function vars_state_auxiliary(m::SWModel, T)
+function vars_state(m::SWModel, ::Auxiliary, T)
     @vars begin
         f::T
         τ::SVector{2, T}  # value includes τₒ, g, and ρ
     end
 end
 
-function vars_state_gradient(m::SWModel, T)
+function vars_state(m::SWModel, ::Gradient, T)
     @vars begin
         ∇U::SVector{2, T}
     end
 end
 
-function vars_state_gradient_flux(m::SWModel, T)
+function vars_state(m::SWModel, ::GradientFlux, T)
     @vars begin
         ν∇U::SMatrix{3, 2, T, 6}
     end

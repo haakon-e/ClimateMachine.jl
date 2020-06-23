@@ -174,8 +174,8 @@ function run_brick_diagostics_fields_test()
         Npl = size(Q.realdata, 1)
 
         ind = [
-            varsindex(vars_state_conservative(model, FT), :ρ)
-            varsindex(vars_state_conservative(model, FT), :ρu)
+            varsindex(vars_state(model, Conservative(), FT), :ρ)
+            varsindex(vars_state(model, Conservative(), FT), :ρu)
         ]
         _ρ, _ρu, _ρv, _ρw = ind[1], ind[2], ind[3], ind[4]
 

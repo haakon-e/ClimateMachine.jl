@@ -48,11 +48,11 @@ import ClimateMachine.DGMethods.NumericalFluxes:
 
 struct ConservationTestModel <: BalanceLaw end
 
-vars_state_auxiliary(::ConservationTestModel, T) = @vars(vel::SVector{3, T})
-vars_state_conservative(::ConservationTestModel, T) = @vars(q::T, p::T)
+vars_state(::ConservationTestModel, ::Auxiliary, T) = @vars(vel::SVector{3, T})
+vars_state(::ConservationTestModel, ::Conservative, T) = @vars(q::T, p::T)
 
-vars_state_gradient(::ConservationTestModel, T) = @vars()
-vars_state_gradient_flux(::ConservationTestModel, T) = @vars()
+vars_state(::ConservationTestModel, ::Gradient, T) = @vars()
+vars_state(::ConservationTestModel, ::GradientFlux, T) = @vars()
 
 function init_state_auxiliary!(
     ::ConservationTestModel,

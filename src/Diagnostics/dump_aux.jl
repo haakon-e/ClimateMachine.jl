@@ -10,7 +10,7 @@ function dump_aux_init(dgngrp, currtime)
 
         # set up the variables we're going to be writing
         vars = OrderedDict()
-        auxnames = flattenednames(vars_state_auxiliary(bl, FT))
+        auxnames = flattenednames(vars_state(bl, Auxiliary(), FT))
         for varname in auxnames
             vars[varname] = (tuple(collect(keys(dims))...), FT, Dict())
         end
@@ -47,7 +47,7 @@ function dump_aux_collect(dgngrp, currtime)
     all_aux_data = accumulate_interpolated_data(mpicomm, interpol, iaux)
 
     if mpirank == 0
-        auxnames = flattenednames(vars_state_auxiliary(bl, FT))
+        auxnames = flattenednames(vars_state(bl, Auxiliary(), FT))
         varvals = OrderedDict()
         for (vari, varname) in enumerate(auxnames)
             varvals[varname] = all_aux_data[:, :, :, vari]

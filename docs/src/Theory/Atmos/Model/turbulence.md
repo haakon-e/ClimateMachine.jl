@@ -33,7 +33,7 @@ be defined for a turbulence model.
 abstract type TurbulenceClosure end
 
 
-vars_state_gradient((::TurbulenceClosure, FT) = @vars()
+vars_state_gradient(::TurbulenceClosure, FT) = @vars()
 vars_state_gradient_flux(::TurbulenceClosure, FT) = @vars()
 vars_state_auxiliary(::TurbulenceClosure, FT) = @vars()
 

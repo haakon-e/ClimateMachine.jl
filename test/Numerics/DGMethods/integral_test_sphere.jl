@@ -56,13 +56,13 @@ function update_auxiliary_state!(
     return true
 end
 
-vars_integrals(::IntegralTestSphereModel, T) = @vars(v::T)
-vars_reverse_integrals(::IntegralTestSphereModel, T) = @vars(v::T)
-vars_state_auxiliary(m::IntegralTestSphereModel, T) =
-    @vars(int::vars_integrals(m, T), rev_int::vars_integrals(m, T), r::T, a::T)
+vars_state(::IntegralTestSphereModel, ::VerticalIntegrals, T) = @vars(v::T)
+vars_state(::IntegralTestSphereModel, ::ReverseIntegrals, T) = @vars(v::T)
+vars_state(m::IntegralTestSphereModel, ::Auxiliary, T) =
+    @vars(int::vars_state(m, VerticalIntegrals(), T), rev_int::vars_state(m, VerticalIntegrals(), T), r::T, a::T)
 
-vars_state_conservative(::IntegralTestSphereModel, T) = @vars()
-vars_state_gradient_flux(::IntegralTestSphereModel, T) = @vars()
+vars_state(::IntegralTestSphereModel, ::Conservative, T) = @vars()
+vars_state(::IntegralTestSphereModel, ::GradientFlux, T) = @vars()
 
 flux_first_order!(::IntegralTestSphereModel, _...) = nothing
 flux_second_order!(::IntegralTestSphereModel, _...) = nothing
