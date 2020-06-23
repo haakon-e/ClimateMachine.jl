@@ -22,6 +22,7 @@ include(joinpath("Common", "SurfaceFluxes", "SurfaceFluxes.jl"))
 include(joinpath("Arrays", "MPIStateArrays.jl"))
 include(joinpath("Numerics", "Mesh", "Mesh.jl"))
 include(joinpath("Numerics", "DGMethods", "Courant.jl"))
+include(joinpath("BalanceLaws", "BalanceLaws.jl"))
 include(joinpath("Numerics", "DGMethods", "DGMethods.jl"))
 include(joinpath("Common", "Orientations", "Orientations.jl"))
 include(joinpath("Utilities", "SingleStackUtils", "SingleStackUtils.jl"))
@@ -31,6 +32,7 @@ include(joinpath(
     "HydrostaticBoussinesq",
     "HydrostaticBoussinesqModel.jl",
 ))
+include(joinpath("Ocean", "SplitExplicit", "SplitExplicitModel.jl"))
 include(joinpath("Numerics", "SystemSolvers", "SystemSolvers.jl"))
 include(joinpath("Numerics", "ODESolvers", "ODESolvers.jl"))
 include(joinpath("Numerics", "ODESolvers", "GenericCallbacks.jl"))

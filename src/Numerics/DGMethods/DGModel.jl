@@ -14,6 +14,7 @@ struct DGModel{BL, G, NFND, NFD, GNF, AS, DS, HDS, D, DD, MD}
     diffusion_direction::DD
     modeldata::MD
 end
+
 function DGModel(
     balance_law,
     grid,
@@ -709,6 +710,7 @@ function reverse_indefinite_stack_integral!(
     wait(device, event)
 end
 
+# TODO: Move to BalanceLaws
 function nodal_update_auxiliary_state!(
     f!,
     dg::DGModel,
