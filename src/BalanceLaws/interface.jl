@@ -21,38 +21,14 @@ abstract type BalanceLaw end # PDE part
 a tuple of symbols containing the state variables
 given a float type `FT`.
 """
-function vars_state_conservative end
-
-"""
-    vars_state(::L, ::Auxiliary, FT)
-
-a tuple of symbols containing the auxiliary variables
-given a float type `FT`.
-"""
-function vars_state_auxiliary end
-
-"""
-    vars_state(::L, ::Gradient, FT)
-
-a tuple of symbols containing the transformed variables
-of which gradients are computed given a float type `FT`.
-"""
-function vars_state_gradient end
-
-"""
-    vars_state(::L, ::GradientFlux, FT)
-
-a tuple of symbols containing the diffusive variables
-given a float type `FT`.
-"""
-function vars_state_gradient_flux end
+function vars_state end
 
 """
     vars_state(::L, ::GradientLaplacian, FT)
 
 a tuple of symbols containing the transformed variables
 of which gradients of laplacian are computed, they must
-be a subset of `vars_state_gradient`, given a float type `FT`.
+be a subset of `vars_state`, given a float type `FT`.
 """
 vars_state(::BalanceLaw, ::GradientLaplacian, FT) = @vars()
 

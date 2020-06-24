@@ -12,10 +12,10 @@ using ..VariableTemplates
 using ..Courant
 using ..BalanceLaws:
     BalanceLaw,
-    vars_state_conservative,
-    vars_state_auxiliary,
-    vars_state_gradient,
-    vars_state_gradient_flux,
+    vars_state,
+    vars_state,
+    vars_state,
+    vars_state,
     vars_gradient_laplacian,
     vars_hyperdiffusive,
     vars_integrals,

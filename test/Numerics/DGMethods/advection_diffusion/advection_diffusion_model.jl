@@ -4,10 +4,10 @@ using ClimateMachine.DGMethods: nodal_update_auxiliary_state!
 using ClimateMachine.BalanceLaws: BalanceLaw
 
 import ClimateMachine.BalanceLaws:
-    vars_state_auxiliary,
-    vars_state_conservative,
-    vars_state_gradient,
-    vars_state_gradient_flux,
+    vars_state,
+    vars_state,
+    vars_state,
+    vars_state,
     flux_first_order!,
     flux_second_order!,
     source!,
@@ -57,8 +57,9 @@ end
 #   `D` Diffusion tensor
 vars_state(::AdvectionDiffusion, ::Auxiliary, FT) =
     @vars(coord::SVector{3, FT}, u::SVector{3, FT}, D::SMatrix{3, 3, FT, 9})
-function vars_state_auxiliary(
+function vars_state(
     ::AdvectionDiffusion{dim, P, fluxBC, true},
+    ::Auxiliary,
     FT,
 ) where {dim, P, fluxBC}
     @vars begin
@@ -72,15 +73,17 @@ vars_state(::AdvectionDiffusion, ::Conservative, FT) = @vars(ρ::FT)
 
 # Take the gradient of density
 vars_state(::AdvectionDiffusion, ::Gradient, FT) = @vars(ρ::FT)
-vars_state_gradient(
+vars_state(
     ::AdvectionDiffusion{dim, P, fluxBC, true},
+    ::Gradient,
     FT,
 ) where {dim, P, fluxBC} = @vars()
 
 # The DG auxiliary variable: D ∇ρ
 vars_state(::AdvectionDiffusion, ::GradientFlux, FT) = @vars(σ::SVector{3, FT})
-vars_state_gradient_flux(
+vars_state(
     ::AdvectionDiffusion{dim, P, fluxBC, true},
+    ::GradientFlux,
     FT,
 ) where {dim, P, fluxBC} = @vars()
 

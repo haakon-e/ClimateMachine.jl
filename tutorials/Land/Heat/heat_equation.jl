@@ -72,10 +72,10 @@ using ClimateMachine.SingleStackUtils
 #  - import necessary ClimateMachine modules: (`import`ing enables us to
 #  provide implementations of these structs/methods)
 import ClimateMachine.BalanceLaws:
-    vars_state_auxiliary,
-    vars_state_conservative,
-    vars_state_gradient,
-    vars_state_gradient_flux,
+    vars_state,
+    vars_state,
+    vars_state,
+    vars_state,
     source!,
     flux_second_order!,
     flux_first_order!,
@@ -154,7 +154,7 @@ vars_state(::HeatModel, ::GradientFlux, FT) = @vars(α∇ρcT::SVector{3, FT});
 # `init_state_conservative!`. Note that
 # - this method is only called at `t=0`
 # - `aux.z` and `aux.T` are available here because we've specified `z` and `T`
-# in `vars_state_auxiliary`
+# in `vars_state`
 function init_state_auxiliary!(m::HeatModel, aux::Vars, geom::LocalGeometry)
     aux.z = geom.coord[3]
     aux.T = m.initialT
@@ -163,7 +163,7 @@ end;
 # Specify the initial values in `state::Vars`. Note that
 # - this method is only called at `t=0`
 # - `state.ρcT` is available here because we've specified `ρcT` in
-# `vars_state_conservative`
+# `vars_state`
 function init_state_conservative!(
     m::HeatModel,
     state::Vars,
@@ -193,7 +193,7 @@ end;
 
 # Compute/update all auxiliary variables at each node. Note that
 # - `aux.T` is available here because we've specified `T` in
-# `vars_state_auxiliary`
+# `vars_state`
 function heat_eq_nodal_update_aux!(
     m::HeatModel,
     state::Vars,
@@ -206,7 +206,7 @@ end;
 # Since we have second-order fluxes, we must tell `ClimateMachine` to compute
 # the gradient of `ρcT`. Here, we specify how `ρcT` is computed. Note that
 #  - `transform.ρcT` is available here because we've specified `ρcT` in
-#  `vars_state_gradient`
+#  `vars_state`
 function compute_gradient_argument!(
     m::HeatModel,
     transform::Vars,
@@ -220,9 +220,9 @@ end;
 # Specify where in `diffusive::Vars` to store the computed gradient from
 # `compute_gradient_argument!`. Note that:
 #  - `diffusive.α∇ρcT` is available here because we've specified `α∇ρcT` in
-#  `vars_state_gradient_flux`
+#  `vars_state`
 #  - `∇transform.ρcT` is available here because we've specified `ρcT`  in
-#  `vars_state_gradient`
+#  `vars_state`
 function compute_gradient_flux!(
     m::HeatModel,
     diffusive::Vars,
@@ -241,7 +241,7 @@ function flux_first_order!(m::HeatModel, _...) end;
 # Compute diffusive flux (``F(α, ρcT, t) = -α ∇ρcT`` in the original PDE).
 # Note that:
 # - `diffusive.α∇ρcT` is available here because we've specified `α∇ρcT` in
-# `vars_state_gradient_flux`
+# `vars_state`
 function flux_second_order!(
     m::HeatModel,
     flux::Grad,

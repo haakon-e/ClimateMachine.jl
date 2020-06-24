@@ -22,7 +22,7 @@ using ClimateMachine.Atmos:
     NoPrecipitation,
     NoRadiation,
     ConstantViscosityWithDivergence,
-    vars_state_conservative
+    vars_state
 using ClimateMachine.Orientations: NoOrientation
 using ClimateMachine.VariableTemplates: flattenednames
 

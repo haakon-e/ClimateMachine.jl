@@ -380,13 +380,13 @@ horizontal and/or vertical reference directions.
     ::Val{dim},
     ::Val{N},
     ::Val{vars_Q},
-    ::Val{vars_state_auxiliary},
+    ::Val{vars_state},
     direction,
     Q,
     state_auxiliary,
     target::AbstractFilterTarget,
     filtermatrix,
-) where {dim, N, vars_Q, vars_state_auxiliary}
+) where {dim, N, vars_Q, vars_state}
     @uniform begin
         FT = eltype(Q)
 
@@ -409,7 +409,7 @@ horizontal and/or vertical reference directions.
         nstates = varsize(vars_Q)
         nfilterstates = number_state_filtered(target, FT)
         nfilteraux =
-            isnothing(state_auxiliary) ? 0 : varsize(vars_state_auxiliary)
+            isnothing(state_auxiliary) ? 0 : varsize(vars_state)
 
         # ugly workaround around problems with @private
         # hopefully will be soon fixed in KA
@@ -445,7 +445,7 @@ horizontal and/or vertical reference directions.
             target,
             Vars{vars_state_filtered(target, FT)}(l_Qfiltered2),
             Vars{vars_Q}(l_Q[:]),
-            Vars{vars_state_auxiliary}(l_aux[:]),
+            Vars{vars_state}(l_aux[:]),
         )
 
         @unroll for fs in 1:nfilterstates
@@ -507,7 +507,7 @@ horizontal and/or vertical reference directions.
             target,
             Vars{vars_Q}(l_Q2),
             Vars{vars_state_filtered(target, FT)}(l_Qfiltered[:]),
-            Vars{vars_state_auxiliary}(l_aux[:]),
+            Vars{vars_state}(l_aux[:]),
         )
 
         # Store result

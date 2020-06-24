@@ -26,10 +26,10 @@ using ..ConfigTypes
 using ..DGMethods
 using ..BalanceLaws:
     number_state_conservative,
-    vars_state_conservative,
+    vars_state,
     number_state_auxiliary,
-    vars_state_auxiliary,
-    vars_state_gradient_flux,
+    vars_state,
+    vars_state,
     number_state_gradient_flux
 using ..Mesh.Interpolation
 using ..MPIStateArrays

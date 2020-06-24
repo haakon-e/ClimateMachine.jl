@@ -213,8 +213,9 @@ end
     end
 end
 
-ClimateMachine.BalanceLaws.vars_state_conservative(
+ClimateMachine.BalanceLaws.vars_state(
     ::FilterTestModel{1},
+    ::Conservative,
     FT,
 ) where {N} = @vars(q::FT)
 function ClimateMachine.BalanceLaws.init_state_conservative!(

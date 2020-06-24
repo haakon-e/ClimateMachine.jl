@@ -16,10 +16,10 @@ using ClimateMachine.VariableTemplates
 using KernelAbstractions.Extras: @unroll
 import ...BalanceLaws:
     BalanceLaw,
-    vars_state_conservative,
-    vars_state_gradient_flux,
-    vars_state_auxiliary,
-    vars_state_gradient,
+    vars_state,
+    vars_state,
+    vars_state,
+    vars_state,
     boundary_state!,
     wavespeed,
     flux_first_order!,
