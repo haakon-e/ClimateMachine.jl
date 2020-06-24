@@ -14,9 +14,6 @@ using ClimateMachine.DGMethods
 using ClimateMachine.BalanceLaws: BalanceLaw
 import ClimateMachine.DGMethods:
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
     flux_first_order!,
     flux_second_order!,
     source!,

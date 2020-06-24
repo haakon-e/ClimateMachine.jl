@@ -73,9 +73,6 @@ using ClimateMachine.SingleStackUtils
 #  provide implementations of these structs/methods)
 import ClimateMachine.BalanceLaws:
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
     source!,
     flux_second_order!,
     flux_first_order!,

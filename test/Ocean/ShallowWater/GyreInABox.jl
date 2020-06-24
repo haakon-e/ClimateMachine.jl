@@ -17,7 +17,6 @@ import ClimateMachine.ShallowWater:
     shallow_init_state!,
     shallow_init_aux!,
     vars_state,
-    vars_state,
     shallow_boundary_state!,
     TurbulenceClosure,
     LinearDrag,

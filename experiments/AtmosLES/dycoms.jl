@@ -28,9 +28,6 @@ const param_set = EarthParameterSet()
 
 import ClimateMachine.BalanceLaws:
     vars_state,
-    vars_state,
-    vars_integrals,
-    vars_reverse_integrals,
     indefinite_stack_integral!,
     reverse_indefinite_stack_integral!,
     integral_load_auxiliary_state!,

@@ -36,13 +36,6 @@ using ClimateMachine.BalanceLaws:
 
 import ClimateMachine.BalanceLaws:
     vars_state,
-    vars_state,
-    vars_state,
-    vars_gradient_laplacian,
-    vars_state,
-    vars_hyperdiffusive,
-    vars_integrals,
-    vars_reverse_integrals,
     flux_first_order!,
     flux_second_order!,
     source!,

@@ -15,9 +15,6 @@ using ClimateMachine.BalanceLaws: BalanceLaw
 
 import ClimateMachine.BalanceLaws:
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
     flux_first_order!,
     flux_second_order!,
     source!,
@@ -26,8 +23,6 @@ import ClimateMachine.BalanceLaws:
     init_state_auxiliary!,
     init_state_conservative!,
     update_auxiliary_state!,
-    vars_integrals,
-    vars_reverse_integrals,
     indefinite_stack_integral!,
     reverse_indefinite_stack_integral!,
     integral_load_auxiliary_state!,

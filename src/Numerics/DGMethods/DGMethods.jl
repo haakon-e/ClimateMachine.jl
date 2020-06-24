@@ -13,13 +13,6 @@ using ..Courant
 using ..BalanceLaws:
     BalanceLaw,
     vars_state,
-    vars_state,
-    vars_state,
-    vars_state,
-    vars_gradient_laplacian,
-    vars_hyperdiffusive,
-    vars_integrals,
-    vars_reverse_integrals,
     number_state_conservative,
     number_state_gradient_flux,
     number_state_conservative,
