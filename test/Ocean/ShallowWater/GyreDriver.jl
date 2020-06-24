@@ -119,12 +119,14 @@ function run(mpicomm, topl, ArrayType, N, dt, FT, model, test)
 
     if test > 2
         outprefix = @sprintf("ic_mpirank%04d_ic", MPI.Comm_rank(mpicomm))
-        statenames = flattenednames(vars_state(model, Conservative(), eltype(Q)))
+        statenames =
+            flattenednames(vars_state(model, Conservative(), eltype(Q)))
         auxnames = flattenednames(vars_state(model, Auxiliary(), eltype(Q)))
         writevtk(outprefix, Q, dg, statenames, dg.state_auxiliary, auxnames)
 
         outprefix = @sprintf("exact_mpirank%04d", MPI.Comm_rank(mpicomm))
-        statenames = flattenednames(vars_state(model, Conservative(), eltype(Qe)))
+        statenames =
+            flattenednames(vars_state(model, Conservative(), eltype(Qe)))
         auxnames = flattenednames(vars_state(model, Auxiliary(), eltype(Qe)))
         writevtk(outprefix, Qe, dg, statenames, dg.state_auxiliary, auxnames)
 

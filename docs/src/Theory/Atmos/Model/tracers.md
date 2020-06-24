@@ -45,10 +45,10 @@ Default stub functions for a generic tracer type are defined here.
 ```julia
 abstract type TracerModel <: BalanceLaw end
 
-vars_state_conservative(::TracerModel, FT) = @vars()
-vars_state_gradient(::TracerModel, FT) = @vars()
-vars_state_gradient_flux(::TracerModel, FT) = @vars()
-vars_state_auxiliary(::TracerModel, FT) = @vars()
+vars_state(::TracerModel, ::Conservative, FT) = @vars()
+vars_state(::TracerModel, ::Gradient, FT) = @vars()
+vars_state(::TracerModel, ::GradientFlux, FT) = @vars()
+vars_state(::TracerModel, ::Auxiliary, FT) = @vars()
 
 function atmos_init_aux!(
     ::TracerModel,

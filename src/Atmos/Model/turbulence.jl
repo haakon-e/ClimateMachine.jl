@@ -469,7 +469,8 @@ struct Vreman{FT} <: TurbulenceClosure
 end
 vars_state(::Vreman, ::Auxiliary, FT) = @vars(Δ::FT)
 vars_state(::Vreman, ::Gradient, FT) = @vars(θ_v::FT)
-vars_state(::Vreman, ::GradientFlux, FT) = @vars(∇u::SMatrix{3, 3, FT, 9}, N²::FT)
+vars_state(::Vreman, ::GradientFlux, FT) =
+    @vars(∇u::SMatrix{3, 3, FT, 9}, N²::FT)
 
 function atmos_init_aux!(::Vreman, ::AtmosModel, aux::Vars, geom::LocalGeometry)
     aux.turbulence.Δ = lengthscale(geom)

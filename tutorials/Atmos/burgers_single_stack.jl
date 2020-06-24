@@ -163,7 +163,8 @@ vars_state(::BurgersEquation, ::Conservative, FT) =
     @vars(ρ::FT, ρu::SVector{3, FT}, ρcT::FT);
 
 # Specify state variables whose gradients are needed for `BurgersEquation`
-vars_state(::BurgersEquation, ::Gradient, FT) = @vars(u::SVector{3, FT}, ρcT::FT);
+vars_state(::BurgersEquation, ::Gradient, FT) =
+    @vars(u::SVector{3, FT}, ρcT::FT);
 
 # Specify gradient variables for `BurgersEquation`
 vars_state(::BurgersEquation, ::GradientFlux, FT) =

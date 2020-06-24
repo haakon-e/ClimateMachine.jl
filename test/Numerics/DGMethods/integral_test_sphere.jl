@@ -58,8 +58,12 @@ end
 
 vars_state(::IntegralTestSphereModel, ::VerticalIntegrals, T) = @vars(v::T)
 vars_state(::IntegralTestSphereModel, ::ReverseIntegrals, T) = @vars(v::T)
-vars_state(m::IntegralTestSphereModel, ::Auxiliary, T) =
-    @vars(int::vars_state(m, VerticalIntegrals(), T), rev_int::vars_state(m, VerticalIntegrals(), T), r::T, a::T)
+vars_state(m::IntegralTestSphereModel, ::Auxiliary, T) = @vars(
+    int::vars_state(m, VerticalIntegrals(), T),
+    rev_int::vars_state(m, VerticalIntegrals(), T),
+    r::T,
+    a::T
+)
 
 vars_state(::IntegralTestSphereModel, ::Conservative, T) = @vars()
 vars_state(::IntegralTestSphereModel, ::GradientFlux, T) = @vars()
