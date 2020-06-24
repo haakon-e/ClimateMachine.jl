@@ -41,11 +41,11 @@ using ClimateMachine.Mesh.Geometry: LocalGeometry
 
 struct IntegralTestModel{dim} <: BalanceLaw end
 
-vars_state(::IntegralTestModel, ::ReverseIntegrals, T) = @vars(a::T, b::T)
-vars_state(::IntegralTestModel, ::VerticalIntegrals, T) = @vars(a::T, b::T)
+vars_state(::IntegralTestModel, ::DownwardIntegrals, T) = @vars(a::T, b::T)
+vars_state(::IntegralTestModel, ::UpwardIntegrals, T) = @vars(a::T, b::T)
 vars_state(m::IntegralTestModel, ::Auxiliary, T) = @vars(
-    int::vars_state(m, VerticalIntegrals(), T),
-    rev_int::vars_state(m, ReverseIntegrals(), T),
+    int::vars_state(m, UpwardIntegrals(), T),
+    rev_int::vars_state(m, DownwardIntegrals(), T),
     coord::SVector{3, T},
     a::T,
     b::T,

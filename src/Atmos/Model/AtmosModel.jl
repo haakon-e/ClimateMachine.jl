@@ -290,8 +290,8 @@ debug variables
 """
 function vars_state(m::AtmosModel, ::Auxiliary, FT)
     @vars begin
-        ∫dz::vars_state(m, VerticalIntegrals(), FT)
-        ∫dnz::vars_state(m, ReverseIntegrals(), FT)
+        ∫dz::vars_state(m, UpwardIntegrals(), FT)
+        ∫dnz::vars_state(m, DownwardIntegrals(), FT)
         coord::SVector{3, FT}
         orientation::vars_state(m.orientation, Auxiliary(), FT)
         ref_state::vars_state(m.ref_state, Auxiliary(), FT)
@@ -303,19 +303,19 @@ function vars_state(m::AtmosModel, ::Auxiliary, FT)
     end
 end
 """
-    vars_state(m::AtmosModel, ::VerticalIntegrals, FT)
+    vars_state(m::AtmosModel, ::UpwardIntegrals, FT)
 """
-function vars_state(m::AtmosModel, ::VerticalIntegrals, FT)
+function vars_state(m::AtmosModel, ::UpwardIntegrals, FT)
     @vars begin
-        radiation::vars_state(m.radiation, VerticalIntegrals(), FT)
+        radiation::vars_state(m.radiation, UpwardIntegrals(), FT)
     end
 end
 """
-    vars_state(m::AtmosModel, ::ReverseIntegrals, FT)
+    vars_state(m::AtmosModel, ::DownwardIntegrals, FT)
 """
-function vars_state(m::AtmosModel, ::ReverseIntegrals, FT)
+function vars_state(m::AtmosModel, ::DownwardIntegrals, FT)
     @vars begin
-        radiation::vars_state(m.radiation, ReverseIntegrals(), FT)
+        radiation::vars_state(m.radiation, DownwardIntegrals(), FT)
     end
 end
 

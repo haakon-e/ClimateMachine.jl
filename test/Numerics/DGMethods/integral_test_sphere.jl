@@ -56,11 +56,11 @@ function update_auxiliary_state!(
     return true
 end
 
-vars_state(::IntegralTestSphereModel, ::VerticalIntegrals, T) = @vars(v::T)
-vars_state(::IntegralTestSphereModel, ::ReverseIntegrals, T) = @vars(v::T)
+vars_state(::IntegralTestSphereModel, ::UpwardIntegrals, T) = @vars(v::T)
+vars_state(::IntegralTestSphereModel, ::DownwardIntegrals, T) = @vars(v::T)
 vars_state(m::IntegralTestSphereModel, ::Auxiliary, T) = @vars(
-    int::vars_state(m, VerticalIntegrals(), T),
-    rev_int::vars_state(m, VerticalIntegrals(), T),
+    int::vars_state(m, UpwardIntegrals(), T),
+    rev_int::vars_state(m, UpwardIntegrals(), T),
     r::T,
     a::T
 )

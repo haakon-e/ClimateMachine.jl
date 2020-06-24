@@ -294,7 +294,7 @@ end
 location to store integrands for bottom up integrals
 ∇hu = the horizontal divegence of u, e.g. dw/dz
 """
-function vars_state(m::HBModel, ::VerticalIntegrals, T)
+function vars_state(m::HBModel, ::UpwardIntegrals, T)
     @vars begin
         ∇hu::T
         αᵀθ::T
@@ -349,7 +349,7 @@ end
 location to store integrands for top down integrals
 αᵀθ = density perturbation
 """
-function vars_state(m::HBModel, ::ReverseIntegrals, T)
+function vars_state(m::HBModel, ::DownwardIntegrals, T)
     @vars begin
         αᵀθ::T
     end
