@@ -355,7 +355,7 @@ function do_output(
         vtkstep
     )
 
-    statenames = flattenednames(vars_state_conservative(model, eltype(Q)))
+    statenames = flattenednames(vars_state(model, Conservative(), eltype(Q)))
     exactnames = statenames .* "_exact"
 
     writevtk(filename, Q, dg, statenames, Qe, exactnames)

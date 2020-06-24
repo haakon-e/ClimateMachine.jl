@@ -136,17 +136,17 @@ m = HeatModel{FT}();
 # the solver.
 
 # Specify auxiliary variables for `HeatModel`
-vars_state_auxiliary(::HeatModel, FT) = @vars(z::FT, T::FT);
+vars_state(::HeatModel, ::Auxiliary, FT) = @vars(z::FT, T::FT);
 
 # Specify state variables, the variables solved for in the PDEs, for
 # `HeatModel`
-vars_state_conservative(::HeatModel, FT) = @vars(ρcT::FT);
+vars_state(::HeatModel, ::Conservative, FT) = @vars(ρcT::FT);
 
 # Specify state variables whose gradients are needed for `HeatModel`
-vars_state_gradient(::HeatModel, FT) = @vars(ρcT::FT);
+vars_state(::HeatModel, ::Gradient, FT) = @vars(ρcT::FT);
 
 # Specify gradient variables for `HeatModel`
-vars_state_gradient_flux(::HeatModel, FT) = @vars(α∇ρcT::SVector{3, FT});
+vars_state(::HeatModel, ::GradientFlux, FT) = @vars(α∇ρcT::SVector{3, FT});
 
 # ## Define the compute kernels
 
@@ -369,12 +369,12 @@ z = get_z(grid, z_scale)
 state_vars = SingleStackUtils.get_vars_from_nodal_stack(
     grid,
     Q,
-    vars_state_conservative(m, FT),
+    vars_state(m, Conservative(), FT),
 )
 aux_vars = SingleStackUtils.get_vars_from_nodal_stack(
     grid,
     aux,
-    vars_state_auxiliary(m, FT),
+    vars_state(m, Auxiliary(), FT),
 )
 all_vars = OrderedDict(state_vars..., aux_vars...);
 export_plot_snapshot(
@@ -410,12 +410,12 @@ callback = GenericCallbacks.EveryXSimulationTime(every_x_simulation_time) do
     state_vars = SingleStackUtils.get_vars_from_nodal_stack(
         grid,
         Q,
-        vars_state_conservative(m, FT),
+        vars_state(m, Conservative(), FT),
     )
     aux_vars = SingleStackUtils.get_vars_from_nodal_stack(
         grid,
         aux,
-        vars_state_auxiliary(m, FT);
+        vars_state(m, Auxiliary(), FT);
         exclude = [z_key],
     )
     all_vars = OrderedDict(state_vars..., aux_vars...)

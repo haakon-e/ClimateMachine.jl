@@ -10,7 +10,7 @@ function dump_state_init(dgngrp, currtime)
 
         # set up the variables we're going to be writing
         vars = OrderedDict()
-        statenames = flattenednames(vars_state_conservative(bl, FT))
+        statenames = flattenednames(vars_state(bl, Conservative(), FT))
         for varname in statenames
             vars[varname] = (tuple(collect(keys(dims))...), FT, Dict())
         end
@@ -49,7 +49,7 @@ function dump_state_collect(dgngrp, currtime)
     all_state_data = accumulate_interpolated_data(mpicomm, interpol, istate)
 
     if mpirank == 0
-        statenames = flattenednames(vars_state_conservative(bl, FT))
+        statenames = flattenednames(vars_state(bl, Conservative(), FT))
         varvals = OrderedDict()
         for (vari, varname) in enumerate(statenames)
             varvals[varname] = all_state_data[:, :, :, vari]

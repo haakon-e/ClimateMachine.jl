@@ -71,7 +71,7 @@ function run1(mpicomm, ArrayType, dim, topl, N, timeend, FT, dt)
         outprefix,
         dg.state_auxiliary,
         dg,
-        flattenednames(vars_state_auxiliary(model, FT)),
+        flattenednames(vars_state(model, Auxiliary(), FT)),
     )
     return FT(0)
 end
@@ -109,7 +109,7 @@ function run2(mpicomm, ArrayType, dim, topl, N, timeend, FT, dt)
         outprefix,
         dg.state_auxiliary,
         dg,
-        flattenednames(vars_state_auxiliary(model, FT)),
+        flattenednames(vars_state(model, Auxiliary(), FT)),
     )
     return FT(0)
 end

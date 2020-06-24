@@ -34,10 +34,10 @@ using ClimateMachine.Mesh.Geometry: LocalGeometry
 
 struct VarsTestModel{dim} <: BalanceLaw end
 
-vars_state_conservative(::VarsTestModel, T) = @vars(x::T, coord::SVector{3, T})
-vars_state_auxiliary(m::VarsTestModel, T) =
+vars_state(::VarsTestModel, ::Conservative, T) = @vars(x::T, coord::SVector{3, T})
+vars_state(m::VarsTestModel, ::Auxiliary, T) =
     @vars(coord::SVector{3, T}, polynomial::T)
-vars_state_gradient_flux(m::VarsTestModel, T) = @vars()
+vars_state(m::VarsTestModel, ::GradientFlux, T) = @vars()
 
 flux_first_order!(::VarsTestModel, _...) = nothing
 flux_second_order!(::VarsTestModel, _...) = nothing

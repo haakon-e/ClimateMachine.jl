@@ -248,8 +248,8 @@ function make_callbacks(
             step
         )
         @info "doing VTK output" outprefix
-        statenames = flattenednames(vars_state_conservative(model, eltype(Q)))
-        auxnames = flattenednames(vars_state_auxiliary(model, eltype(Q)))
+        statenames = flattenednames(vars_state(model, Conservative(), eltype(Q)))
+        auxnames = flattenednames(vars_state(model, Auxiliary(), eltype(Q)))
         writevtk(outprefix, Q, dg, statenames, dg.state_auxiliary, auxnames)
     end
 

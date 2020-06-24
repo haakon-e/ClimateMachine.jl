@@ -55,7 +55,7 @@ end
 #   `coord` coordinate points (needed for BCs)
 #   `u` advection velocity
 #   `D` Diffusion tensor
-vars_state_auxiliary(::AdvectionDiffusion, FT) =
+vars_state(::AdvectionDiffusion, ::Auxiliary, FT) =
     @vars(coord::SVector{3, FT}, u::SVector{3, FT}, D::SMatrix{3, 3, FT, 9})
 function vars_state_auxiliary(
     ::AdvectionDiffusion{dim, P, fluxBC, true},
@@ -68,17 +68,17 @@ function vars_state_auxiliary(
 end
 
 # Density is only state
-vars_state_conservative(::AdvectionDiffusion, FT) = @vars(ρ::FT)
+vars_state(::AdvectionDiffusion, ::Conservative, FT) = @vars(ρ::FT)
 
 # Take the gradient of density
-vars_state_gradient(::AdvectionDiffusion, FT) = @vars(ρ::FT)
+vars_state(::AdvectionDiffusion, ::Gradient, FT) = @vars(ρ::FT)
 vars_state_gradient(
     ::AdvectionDiffusion{dim, P, fluxBC, true},
     FT,
 ) where {dim, P, fluxBC} = @vars()
 
 # The DG auxiliary variable: D ∇ρ
-vars_state_gradient_flux(::AdvectionDiffusion, FT) = @vars(σ::SVector{3, FT})
+vars_state(::AdvectionDiffusion, ::GradientFlux, FT) = @vars(σ::SVector{3, FT})
 vars_state_gradient_flux(
     ::AdvectionDiffusion{dim, P, fluxBC, true},
     FT,
@@ -300,7 +300,7 @@ function boundary_state!(
     elseif bctype == 2 # Neumann with data
         FT = eltype(diff⁺)
         ngrad = number_state_gradient(m, FT)
-        ∇state = Grad{vars_state_gradient(m, FT)}(similar(
+        ∇state = Grad{vars_state(m, Gradient(), FT)}(similar(
             parent(diff⁺),
             Size(3, ngrad),
         ))
@@ -311,7 +311,7 @@ function boundary_state!(
     elseif bctype == 4 # zero Neumann
         FT = eltype(diff⁺)
         ngrad = number_state_gradient(m, FT)
-        ∇state = Grad{vars_state_gradient(m, FT)}(similar(
+        ∇state = Grad{vars_state(m, Gradient(), FT)}(similar(
             parent(diff⁺),
             Size(3, ngrad),
         ))
@@ -362,7 +362,7 @@ function boundary_flux_second_order!(
     elseif bctype == 2 # Neumann data
         FT = eltype(diff⁺)
         ngrad = number_state_gradient(m, FT)
-        ∇state = Grad{vars_state_gradient(m, FT)}(similar(
+        ∇state = Grad{vars_state(m, Gradient(), FT)}(similar(
             parent(diff⁺),
             Size(3, ngrad),
         ))

@@ -4,12 +4,12 @@ using LinearAlgebra
 export HyperDiffusion, NoHyperDiffusion, StandardHyperDiffusion
 
 abstract type HyperDiffusion end
-vars_state_conservative(::HyperDiffusion, FT) = @vars()
-vars_state_auxiliary(::HyperDiffusion, FT) = @vars()
-vars_state_gradient(::HyperDiffusion, FT) = @vars()
-vars_gradient_laplacian(::HyperDiffusion, FT) = @vars()
-vars_state_gradient_flux(::HyperDiffusion, FT) = @vars()
-vars_hyperdiffusive(::HyperDiffusion, FT) = @vars()
+vars_state(::HyperDiffusion, ::Conservative, FT) = @vars()
+vars_state(::HyperDiffusion, ::Auxiliary, FT) = @vars()
+vars_state(::HyperDiffusion, ::Gradient, FT) = @vars()
+vars_state(::HyperDiffusion, ::GradientLaplacian, FT) = @vars()
+vars_state(::HyperDiffusion, ::GradientFlux, FT) = @vars()
+vars_state(::HyperDiffusion, ::Hyperdiffusive, FT) = @vars()
 function atmos_init_aux!(
     ::HyperDiffusion,
     ::AtmosModel,
@@ -72,12 +72,12 @@ struct StandardHyperDiffusion{FT} <: HyperDiffusion
     τ_timescale::FT
 end
 
-vars_state_auxiliary(::StandardHyperDiffusion, FT) = @vars(Δ::FT)
-vars_state_gradient(::StandardHyperDiffusion, FT) =
+vars_state(::StandardHyperDiffusion, ::Auxiliary, FT) = @vars(Δ::FT)
+vars_state(::StandardHyperDiffusion, ::Gradient, FT) =
     @vars(u::SVector{3, FT}, h_tot::FT)
-vars_gradient_laplacian(::StandardHyperDiffusion, FT) =
+vars_state(::StandardHyperDiffusion, ::GradientLaplacian, FT) =
     @vars(u::SVector{3, FT}, h_tot::FT)
-vars_hyperdiffusive(::StandardHyperDiffusion, FT) =
+vars_state(::StandardHyperDiffusion, ::Hyperdiffusive, FT) =
     @vars(ν∇³u::SMatrix{3, 3, FT, 9}, ν∇³h_tot::SVector{3, FT})
 
 function atmos_init_aux!(

@@ -217,105 +217,105 @@ end
 
 
 """
-    vars_state_conservative(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::Conservative, FT)
 Conserved state variables (Prognostic Variables)
 """
-function vars_state_conservative(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::Conservative, FT)
     @vars begin
         ρ::FT
         ρu::SVector{3, FT}
         ρe::FT
-        turbulence::vars_state_conservative(m.turbulence, FT)
-        hyperdiffusion::vars_state_conservative(m.hyperdiffusion, FT)
-        moisture::vars_state_conservative(m.moisture, FT)
-        radiation::vars_state_conservative(m.radiation, FT)
-        tracers::vars_state_conservative(m.tracers, FT)
+        turbulence::vars_state(m.turbulence, Conservative(), FT)
+        hyperdiffusion::vars_state(m.hyperdiffusion, Conservative(), FT)
+        moisture::vars_state(m.moisture, Conservative(), FT)
+        radiation::vars_state(m.radiation, Conservative(), FT)
+        tracers::vars_state(m.tracers, Conservative(), FT)
     end
 end
 
 """
-    vars_state_gradient(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::Gradient, FT)
 Pre-transform gradient variables
 """
-function vars_state_gradient(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::Gradient, FT)
     @vars begin
         u::SVector{3, FT}
         h_tot::FT
-        turbulence::vars_state_gradient(m.turbulence, FT)
-        hyperdiffusion::vars_state_gradient(m.hyperdiffusion, FT)
-        moisture::vars_state_gradient(m.moisture, FT)
-        tracers::vars_state_gradient(m.tracers, FT)
+        turbulence::vars_state(m.turbulence, Gradient(), FT)
+        hyperdiffusion::vars_state(m.hyperdiffusion, Gradient(), FT)
+        moisture::vars_state(m.moisture, Gradient(), FT)
+        tracers::vars_state(m.tracers, Gradient(), FT)
     end
 end
 """
-    vars_state_gradient_flux(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::GradientFlux, FT)
 Post-transform gradient variables
 """
-function vars_state_gradient_flux(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::GradientFlux, FT)
     @vars begin
         ∇h_tot::SVector{3, FT}
-        turbulence::vars_state_gradient_flux(m.turbulence, FT)
-        hyperdiffusion::vars_state_gradient_flux(m.hyperdiffusion, FT)
-        moisture::vars_state_gradient_flux(m.moisture, FT)
-        tracers::vars_state_gradient_flux(m.tracers, FT)
+        turbulence::vars_state(m.turbulence, GradientFlux(), FT)
+        hyperdiffusion::vars_state(m.hyperdiffusion, GradientFlux(), FT)
+        moisture::vars_state(m.moisture, GradientFlux(), FT)
+        tracers::vars_state(m.tracers, GradientFlux(), FT)
     end
 end
 
 """
-    vars_gradient_laplacian(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::GradientLaplacian, FT)
 Pre-transform hyperdiffusive variables
 """
-function vars_gradient_laplacian(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::GradientLaplacian, FT)
     @vars begin
-        hyperdiffusion::vars_gradient_laplacian(m.hyperdiffusion, FT)
+        hyperdiffusion::vars_state(m.hyperdiffusion, GradientLaplacian(), FT)
     end
 end
 
 """
-    vars_hyperdiffusive(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::Hyperdiffusive, FT)
 Post-transform hyperdiffusive variables
 """
-function vars_hyperdiffusive(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::Hyperdiffusive, FT)
     @vars begin
-        hyperdiffusion::vars_hyperdiffusive(m.hyperdiffusion, FT)
+        hyperdiffusion::vars_state(m.hyperdiffusion, Hyperdiffusive(), FT)
     end
 end
 
 """
-    vars_state_auxiliary(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::Auxiliary, FT)
 Auxiliary variables, such as vertical (stack)
 integrals, coordinates, orientation information,
 reference states, subcomponent auxiliary vars,
 debug variables
 """
-function vars_state_auxiliary(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::Auxiliary, FT)
     @vars begin
-        ∫dz::vars_integrals(m, FT)
-        ∫dnz::vars_reverse_integrals(m, FT)
+        ∫dz::vars_state(m, VerticalIntegrals(), FT)
+        ∫dnz::vars_state(m, ReverseIntegrals(), FT)
         coord::SVector{3, FT}
-        orientation::vars_state_auxiliary(m.orientation, FT)
-        ref_state::vars_state_auxiliary(m.ref_state, FT)
-        turbulence::vars_state_auxiliary(m.turbulence, FT)
-        hyperdiffusion::vars_state_auxiliary(m.hyperdiffusion, FT)
-        moisture::vars_state_auxiliary(m.moisture, FT)
-        tracers::vars_state_auxiliary(m.tracers, FT)
-        radiation::vars_state_auxiliary(m.radiation, FT)
+        orientation::vars_state(m.orientation, Auxiliary(), FT)
+        ref_state::vars_state(m.ref_state, Auxiliary(), FT)
+        turbulence::vars_state(m.turbulence, Auxiliary(), FT)
+        hyperdiffusion::vars_state(m.hyperdiffusion, Auxiliary(), FT)
+        moisture::vars_state(m.moisture, Auxiliary(), FT)
+        tracers::vars_state(m.tracers, Auxiliary(), FT)
+        radiation::vars_state(m.radiation, Auxiliary(), FT)
     end
 end
 """
-    vars_integrals(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::VerticalIntegrals, FT)
 """
-function vars_integrals(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::VerticalIntegrals, FT)
     @vars begin
-        radiation::vars_integrals(m.radiation, FT)
+        radiation::vars_state(m.radiation, VerticalIntegrals(), FT)
     end
 end
 """
-    vars_reverse_integrals(m::AtmosModel, FT)
+    vars_state(m::AtmosModel, ::ReverseIntegrals, FT)
 """
-function vars_reverse_integrals(m::AtmosModel, FT)
+function vars_state(m::AtmosModel, ::ReverseIntegrals, FT)
     @vars begin
-        radiation::vars_reverse_integrals(m.radiation, FT)
+        radiation::vars_state(m.radiation, ReverseIntegrals(), FT)
     end
 end
 
@@ -518,7 +518,7 @@ end
 
     FT = typeof(state.ρ)
     ws = fill(uN + ss, MVector{number_state_conservative(m, FT), FT})
-    vars_ws = Vars{vars_state_conservative(m, FT)}(ws)
+    vars_ws = Vars{vars_state(m, Conservative(), FT)}(ws)
 
     wavespeed_tracers!(m.tracers, vars_ws, nM, state, aux, t)
 

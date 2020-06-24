@@ -41,7 +41,7 @@ function init_velocity_diffusion!(
 end
 
 struct BigAdvectionDiffusion <: BalanceLaw end
-function vars_state_conservative(::BigAdvectionDiffusion, FT)
+function vars_state(::BigAdvectionDiffusion, ::Conservative, FT)
     @vars begin
         ρ::FT
         X::SVector{3, FT}

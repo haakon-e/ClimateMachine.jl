@@ -155,18 +155,18 @@ m = BurgersEquation{FT}();
 # by the solver.
 
 # Specify auxiliary variables for `BurgersEquation`
-vars_state_auxiliary(::BurgersEquation, FT) = @vars(z::FT, T::FT);
+vars_state(::BurgersEquation, ::Auxiliary, FT) = @vars(z::FT, T::FT);
 
 # Specify state variables, the variables solved for in the PDEs, for
 # `BurgersEquation`
-vars_state_conservative(::BurgersEquation, FT) =
+vars_state(::BurgersEquation, ::Conservative, FT) =
     @vars(ρ::FT, ρu::SVector{3, FT}, ρcT::FT);
 
 # Specify state variables whose gradients are needed for `BurgersEquation`
-vars_state_gradient(::BurgersEquation, FT) = @vars(u::SVector{3, FT}, ρcT::FT);
+vars_state(::BurgersEquation, ::Gradient, FT) = @vars(u::SVector{3, FT}, ρcT::FT);
 
 # Specify gradient variables for `BurgersEquation`
-vars_state_gradient_flux(::BurgersEquation, FT) =
+vars_state(::BurgersEquation, ::GradientFlux, FT) =
     @vars(μ∇u::SMatrix{3, 3, FT, 9}, α∇ρcT::SVector{3, FT});
 
 # ## Define the compute kernels
@@ -450,14 +450,14 @@ z = get_z(driver_config.grid, z_scale)
 state_vars = get_vars_from_nodal_stack(
     driver_config.grid,
     solver_config.Q,
-    vars_state_conservative(m, FT),
+    vars_state(m, Conservative(), FT),
     i = 1,
     j = 1,
 );
 aux_vars = get_vars_from_nodal_stack(
     driver_config.grid,
     solver_config.dg.state_auxiliary,
-    vars_state_auxiliary(m, FT),
+    vars_state(m, Auxiliary(), FT),
     i = 1,
     j = 1,
     exclude = [z_key],
@@ -493,13 +493,13 @@ export_plot_snapshot(
 state_vars_var = get_horizontal_variance(
     driver_config.grid,
     solver_config.Q,
-    vars_state_conservative(m, FT),
+    vars_state(m, Conservative(), FT),
 );
 
 state_vars_avg = get_horizontal_mean(
     driver_config.grid,
     solver_config.Q,
-    vars_state_conservative(m, FT),
+    vars_state(m, Conservative(), FT),
 );
 
 export_plot_snapshot(
@@ -545,12 +545,12 @@ callback = GenericCallbacks.EveryXSimulationTime(every_x_simulation_time) do
     state_vars_var = get_horizontal_variance(
         driver_config.grid,
         solver_config.Q,
-        vars_state_conservative(m, FT),
+        vars_state(m, Conservative(), FT),
     )
     state_vars_avg = get_horizontal_mean(
         driver_config.grid,
         solver_config.Q,
-        vars_state_conservative(m, FT),
+        vars_state(m, Conservative(), FT),
     )
     step[1] += 1
     push!(data_var, state_vars_var)

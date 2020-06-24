@@ -11,7 +11,7 @@ function create_conservative_state(balance_law::BalanceLaw, grid)
     weights = view(h_vgeo, :, grid.Mid, :)
     weights = reshape(weights, size(weights, 1), 1, size(weights, 2))
 
-    V = vars_state_conservative(balance_law, FT)
+    V = vars_state(balance_law, Conservative(), FT)
     state_conservative = MPIStateArray{FT, V}(
         topology.mpicomm,
         DA,
@@ -41,7 +41,7 @@ function create_auxiliary_state(balance_law, grid)
     weights = view(h_vgeo, :, grid.Mid, :)
     weights = reshape(weights, size(weights, 1), 1, size(weights, 2))
 
-    V = vars_state_auxiliary(balance_law, FT)
+    V = vars_state(balance_law, Auxiliary(), FT)
     state_auxiliary = MPIStateArray{FT, V}(
         topology.mpicomm,
         DA,
@@ -98,7 +98,7 @@ function create_gradient_state(balance_law, grid)
     weights = reshape(weights, size(weights, 1), 1, size(weights, 2))
 
     # TODO: Clean up this MPIStateArray interface...
-    V = vars_state_gradient_flux(balance_law, FT)
+    V = vars_state(balance_law, GradientFlux(), FT)
     state_gradient_flux = MPIStateArray{FT, V}(
         topology.mpicomm,
         DA,
@@ -131,7 +131,7 @@ function create_higher_order_states(balance_law, grid)
 
     ngradlapstate = num_gradient_laplacian(balance_law, FT)
     # TODO: Clean up this MPIStateArray interface...
-    V = vars_gradient_laplacian(balance_law, FT)
+    V = vars_state(balance_law, GradientLaplacian(), FT)
     Qhypervisc_grad = MPIStateArray{FT, V}(
         topology.mpicomm,
         DA,
@@ -148,7 +148,7 @@ function create_higher_order_states(balance_law, grid)
         weights = weights,
     )
 
-    V = vars_hyperdiffusive(balance_law, FT)
+    V = vars_state(balance_law, Hyperdiffusive(), FT)
     Qhypervisc_div = MPIStateArray{FT, V}(
         topology.mpicomm,
         DA,

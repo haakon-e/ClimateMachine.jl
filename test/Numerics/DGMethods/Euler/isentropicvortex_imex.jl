@@ -291,7 +291,7 @@ end
 struct IsentropicVortexReferenceState{FT} <: ReferenceState
     setup::IsentropicVortexSetup{FT}
 end
-vars_state_auxiliary(::IsentropicVortexReferenceState, FT) =
+vars_state(::IsentropicVortexReferenceState, ::Auxiliary, FT) =
     @vars(ρ::FT, ρe::FT, p::FT, T::FT)
 function atmos_init_aux!(
     m::IsentropicVortexReferenceState,
@@ -368,7 +368,7 @@ function do_output(
         vtkstep
     )
 
-    statenames = flattenednames(vars_state_conservative(model, eltype(Q)))
+    statenames = flattenednames(vars_state(model, Conservative(), eltype(Q)))
     exactnames = statenames .* "_exact"
 
     writevtk(filename, Q, dg, statenames, Qe, exactnames)

@@ -46,7 +46,7 @@ function extract_state_conservative(dg, state_conservative, ijk, e)
     for s in 1:num_state_conservative
         local_state_conservative[s] = state_conservative[ijk, s, e]
     end
-    return Vars{vars_state_conservative(bl, FT)}(local_state_conservative)
+    return Vars{vars_state(bl, Conservative(), FT)}(local_state_conservative)
 end
 function extract_state_auxiliary(dg, state_auxiliary, ijk, e)
     bl = dg.balance_law
@@ -56,7 +56,7 @@ function extract_state_auxiliary(dg, state_auxiliary, ijk, e)
     for s in 1:num_state_auxiliary
         local_state_auxiliary[s] = state_auxiliary[ijk, s, e]
     end
-    return Vars{vars_state_auxiliary(bl, FT)}(local_state_auxiliary)
+    return Vars{vars_state(bl, Auxiliary(), FT)}(local_state_auxiliary)
 end
 function extract_state_gradient_flux(dg, state_gradient_flux, ijk, e)
     bl = dg.balance_law
@@ -67,5 +67,5 @@ function extract_state_gradient_flux(dg, state_gradient_flux, ijk, e)
     for s in 1:num_state_gradient_flux
         local_state_gradient_flux[s] = state_gradient_flux[ijk, s, e]
     end
-    return Vars{vars_state_gradient_flux(bl, FT)}(local_state_gradient_flux)
+    return Vars{vars_state(bl, GradientFlux(), FT)}(local_state_gradient_flux)
 end

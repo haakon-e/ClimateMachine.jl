@@ -28,8 +28,8 @@ export turbulence_tensors
 # which will be overloaded with model specific functions.
 abstract type TurbulenceClosure end
 
-vars_state_conservative(::TurbulenceClosure, FT) = @vars()
-vars_state_auxiliary(::TurbulenceClosure, FT) = @vars()
+vars_state(::TurbulenceClosure, ::Conservative, FT) = @vars()
+vars_state(::TurbulenceClosure, ::Auxiliary, FT) = @vars()
 
 
 """
@@ -228,8 +228,8 @@ struct ConstantViscosityWithDivergence{FT} <: TurbulenceClosure
     ρν::FT
 end
 
-vars_state_gradient(::ConstantViscosityWithDivergence, FT) = @vars()
-vars_state_gradient_flux(::ConstantViscosityWithDivergence, FT) =
+vars_state(::ConstantViscosityWithDivergence, ::Gradient, FT) = @vars()
+vars_state(::ConstantViscosityWithDivergence, ::GradientFlux, FT) =
     @vars(S::SHermitianCompact{3, FT, 6})
 
 function compute_gradient_flux!(
@@ -343,9 +343,9 @@ struct SmagorinskyLilly{FT} <: TurbulenceClosure
     C_smag::FT
 end
 
-vars_state_auxiliary(::SmagorinskyLilly, FT) = @vars(Δ::FT)
-vars_state_gradient(::SmagorinskyLilly, FT) = @vars(θ_v::FT)
-vars_state_gradient_flux(::SmagorinskyLilly, FT) =
+vars_state(::SmagorinskyLilly, ::Auxiliary, FT) = @vars(Δ::FT)
+vars_state(::SmagorinskyLilly, ::Gradient, FT) = @vars(θ_v::FT)
+vars_state(::SmagorinskyLilly, ::GradientFlux, FT) =
     @vars(S::SHermitianCompact{3, FT, 6}, N²::FT)
 
 
@@ -467,9 +467,9 @@ struct Vreman{FT} <: TurbulenceClosure
     "Smagorinsky Coefficient [dimensionless]"
     C_smag::FT
 end
-vars_state_auxiliary(::Vreman, FT) = @vars(Δ::FT)
-vars_state_gradient(::Vreman, FT) = @vars(θ_v::FT)
-vars_state_gradient_flux(::Vreman, FT) = @vars(∇u::SMatrix{3, 3, FT, 9}, N²::FT)
+vars_state(::Vreman, ::Auxiliary, FT) = @vars(Δ::FT)
+vars_state(::Vreman, ::Gradient, FT) = @vars(θ_v::FT)
+vars_state(::Vreman, ::GradientFlux, FT) = @vars(∇u::SMatrix{3, 3, FT, 9}, N²::FT)
 
 function atmos_init_aux!(::Vreman, ::AtmosModel, aux::Vars, geom::LocalGeometry)
     aux.turbulence.Δ = lengthscale(geom)
@@ -568,9 +568,9 @@ $(DocStringExtensions.FIELDS)
 struct AnisoMinDiss{FT} <: TurbulenceClosure
     C_poincare::FT
 end
-vars_state_auxiliary(::AnisoMinDiss, FT) = @vars(Δ::FT)
-vars_state_gradient(::AnisoMinDiss, FT) = @vars(θ_v::FT)
-vars_state_gradient_flux(::AnisoMinDiss, FT) =
+vars_state(::AnisoMinDiss, ::Auxiliary, FT) = @vars(Δ::FT)
+vars_state(::AnisoMinDiss, ::Gradient, FT) = @vars(θ_v::FT)
+vars_state(::AnisoMinDiss, ::GradientFlux, FT) =
     @vars(∇u::SMatrix{3, 3, FT, 9}, N²::FT)
 function atmos_init_aux!(
     ::AnisoMinDiss,
