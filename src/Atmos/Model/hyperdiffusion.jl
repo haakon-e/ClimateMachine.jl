@@ -4,12 +4,8 @@ using LinearAlgebra
 export HyperDiffusion, NoHyperDiffusion, StandardHyperDiffusion
 
 abstract type HyperDiffusion end
-vars_state(::HyperDiffusion, ::Conservative, FT) = @vars()
-vars_state(::HyperDiffusion, ::Auxiliary, FT) = @vars()
-vars_state(::HyperDiffusion, ::Gradient, FT) = @vars()
-vars_state(::HyperDiffusion, ::GradientLaplacian, FT) = @vars()
-vars_state(::HyperDiffusion, ::GradientFlux, FT) = @vars()
-vars_state(::HyperDiffusion, ::Hyperdiffusive, FT) = @vars()
+vars_state(::HyperDiffusion, ::AbstractStateType, FT) = @vars()
+
 function atmos_init_aux!(
     ::HyperDiffusion,
     ::AtmosModel,

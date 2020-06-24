@@ -28,8 +28,7 @@ export turbulence_tensors
 # which will be overloaded with model specific functions.
 abstract type TurbulenceClosure end
 
-vars_state(::TurbulenceClosure, ::Conservative, FT) = @vars()
-vars_state(::TurbulenceClosure, ::Auxiliary, FT) = @vars()
+vars_state(::TurbulenceClosure, ::AbstractStateType, FT) = @vars()
 
 
 """

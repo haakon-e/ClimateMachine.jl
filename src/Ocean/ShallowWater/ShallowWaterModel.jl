@@ -7,8 +7,8 @@ using ..VariableTemplates
 using LinearAlgebra: Diagonal, dot
 using CLIMAParameters.Planet: grav
 
+using ..BalanceLaws
 import ..BalanceLaws:
-    BalanceLaw,
     vars_state,
     flux_first_order!,
     flux_second_order!,

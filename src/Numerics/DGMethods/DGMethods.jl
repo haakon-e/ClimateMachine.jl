@@ -12,6 +12,14 @@ using ..VariableTemplates
 using ..Courant
 using ..BalanceLaws:
     BalanceLaw,
+    Conservative,
+    Auxiliary,
+    Gradient,
+    GradientFlux,
+    GradientLaplacian,
+    Hyperdiffusive,
+    UpwardIntegrals,
+    DownwardIntegrals,
     vars_state,
     number_state_conservative,
     number_state_gradient_flux,

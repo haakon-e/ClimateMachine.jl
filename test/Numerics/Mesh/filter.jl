@@ -4,6 +4,7 @@ using ClimateMachine.VariableTemplates: @vars, Vars
 using ClimateMachine.Mesh.Grids:
     EveryDirection, HorizontalDirection, VerticalDirection
 using ClimateMachine.MPIStateArrays: weightedsum
+using ClimateMachine.BalanceLaws
 
 import GaussQuadrature
 using MPI

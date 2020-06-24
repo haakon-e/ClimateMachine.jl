@@ -48,8 +48,7 @@ struct ConservationTestModel <: BalanceLaw end
 vars_state(::ConservationTestModel, ::Auxiliary, T) = @vars(vel::SVector{3, T})
 vars_state(::ConservationTestModel, ::Conservative, T) = @vars(q::T, p::T)
 
-vars_state(::ConservationTestModel, ::Gradient, T) = @vars()
-vars_state(::ConservationTestModel, ::GradientFlux, T) = @vars()
+vars_state(::ConservationTestModel, ::AbstractStateType, T) = @vars()
 
 function init_state_auxiliary!(
     ::ConservationTestModel,

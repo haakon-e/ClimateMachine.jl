@@ -14,7 +14,7 @@ using ClimateMachine
 ClimateMachine.init()
 using ClimateMachine.ConfigTypes
 using ClimateMachine.Atmos
-using ClimateMachine.Atmos: vars_state, vars_state
+using ClimateMachine.Atmos: vars_state
 using ClimateMachine.Orientations
 using ClimateMachine.DGMethods
 using ClimateMachine.DGMethods.NumericalFluxes

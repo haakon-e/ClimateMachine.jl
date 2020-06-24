@@ -13,10 +13,8 @@ condition or for linearization.
 """
 abstract type ReferenceState end
 
-vars_state(m::ReferenceState, ::Conservative, FT) = @vars()
-vars_state(m::ReferenceState, ::Gradient, FT) = @vars()
-vars_state(m::ReferenceState, ::GradientFlux, FT) = @vars()
-vars_state(m::ReferenceState, ::Auxiliary, FT) = @vars()
+vars_state(m::ReferenceState, ::AbstractStateType, FT) = @vars()
+
 atmos_init_aux!(
     ::ReferenceState,
     ::AtmosModel,

@@ -39,10 +39,7 @@ import ClimateMachine.BalanceLaws: boundary_state!
 import ClimateMachine.Atmos: flux_second_order!
 
 # -------------------- Radiation Model -------------------------- #
-vars_state(::RadiationModel, ::Conservative, FT) = @vars()
-vars_state(::RadiationModel, ::Auxiliary, FT) = @vars()
-vars_state(::RadiationModel, ::UpwardIntegrals, FT) = @vars()
-vars_state(::RadiationModel, ::DownwardIntegrals, FT) = @vars()
+vars_state(::RadiationModel, ::AbstractStateType, FT) = @vars()
 
 function atmos_nodal_update_auxiliary_state!(
     ::RadiationModel,
