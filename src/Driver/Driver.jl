@@ -20,7 +20,6 @@ using ..DGMethods
 using ..BalanceLaws:
     BalanceLaw,
     vars_state,
-    vars_state,
     update_auxiliary_state!
 using ..DGMethods: remainder_DGModel
 using ..DGMethods.NumericalFluxes

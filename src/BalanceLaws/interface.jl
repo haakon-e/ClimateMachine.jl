@@ -304,8 +304,7 @@ num_gradient_laplacian(m::BalanceLaw, FT) =
     varsize(vars_state(m, GradientLaplacian(), FT))
 num_hyperdiffusive(m::BalanceLaw, FT) =
     varsize(vars_state(m, Hyperdiffusive(), FT))
-num_integrals(m::BalanceLaw, FT) =
-    varsize(vars_state(m, UpwardIntegrals(), FT))
+num_integrals(m::BalanceLaw, FT) = varsize(vars_state(m, UpwardIntegrals(), FT))
 num_reverse_integrals(m::BalanceLaw, FT) =
     varsize(vars_state(m, DownwardIntegrals(), FT))
 
