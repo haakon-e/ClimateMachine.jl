@@ -1,6 +1,8 @@
 using ClimateMachine.VariableTemplates
 
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws:
+    BalanceLaw, Conservative, Auxiliary, Gradient, GradientFlux
+
 
 import ClimateMachine.BalanceLaws:
     vars_state,

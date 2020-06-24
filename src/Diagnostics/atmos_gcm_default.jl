@@ -234,8 +234,8 @@ function atmos_gcm_default_collect(dgngrp::DiagnosticsGroup, currtime)
     # Compute thermo variables
     thermo_array = Array{FT}(undef, npoints, num_thermo(atmos, FT), nrealelem)
     @visitQ nhorzelem nvertelem Nqk Nq begin
-        state = extract_state_conservative(dg, state_data, ijk, e)
-        aux = extract_state_auxiliary(dg, aux_data, ijk, e)
+        state = extract_state(dg, state_data, ijk, e, Conservative())
+        aux = extract_state(dg, aux_data, ijk, e, Auxiliary())
 
         thermo = thermo_vars(atmos, view(thermo_array, ijk, :, e))
         compute_thermo!(atmos, state, aux, thermo)
@@ -243,8 +243,11 @@ function atmos_gcm_default_collect(dgngrp::DiagnosticsGroup, currtime)
 
     # Interpolate the state, thermo and dyn vars to sphere (u and vorticity
     # need projection to zonal, merid). All this may happen on the GPU.
-    istate =
-        ArrayType{FT}(undef, interpol.Npl, number_state_conservative(atmos, FT))
+    istate = ArrayType{FT}(
+        undef,
+        interpol.Npl,
+        number_states(atmos, Conservative(), FT),
+    )
     interpolate_local!(interpol, Q.realdata, istate)
 
     ithermo = ArrayType{FT}(undef, interpol.Npl, num_thermo(atmos, FT))

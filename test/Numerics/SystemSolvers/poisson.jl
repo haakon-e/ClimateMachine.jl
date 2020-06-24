@@ -11,7 +11,9 @@ using ClimateMachine.DGMethods.NumericalFluxes
 using ClimateMachine.MPIStateArrays
 using ClimateMachine.VariableTemplates
 using ClimateMachine.DGMethods
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws:
+    BalanceLaw, Conservative, Auxiliary, Gradient, GradientFlux
+
 import ClimateMachine.DGMethods:
     vars_state,
     flux_first_order!,

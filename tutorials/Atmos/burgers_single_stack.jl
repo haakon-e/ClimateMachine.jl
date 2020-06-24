@@ -69,7 +69,6 @@ using ClimateMachine.Mesh.Grids
 using ClimateMachine.Writers
 using ClimateMachine.DGMethods
 using ClimateMachine.DGMethods.NumericalFluxes
-using ClimateMachine.BalanceLaws: BalanceLaw
 using ClimateMachine.Mesh.Geometry: LocalGeometry
 using ClimateMachine.MPIStateArrays
 using ClimateMachine.GenericCallbacks
@@ -79,7 +78,7 @@ using ClimateMachine.SingleStackUtils
 
 #  - import necessary ClimateMachine modules: (`import`ing enables us to
 #  provide implementations of these structs/methods)
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws
 import ClimateMachine.BalanceLaws:
     vars_state,
     source!,

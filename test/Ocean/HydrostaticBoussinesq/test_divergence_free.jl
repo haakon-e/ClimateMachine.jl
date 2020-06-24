@@ -6,7 +6,7 @@ using ClimateMachine.ODESolvers
 using ClimateMachine.Mesh.Filters
 using ClimateMachine.VariableTemplates
 using ClimateMachine.Mesh.Grids: polynomialorder
-using ClimateMachine.BalanceLaws: vars_state
+using ClimateMachine.BalanceLaws: vars_state, Conservative
 using ClimateMachine.HydrostaticBoussinesq
 
 using CLIMAParameters

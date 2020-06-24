@@ -7,10 +7,9 @@ using Logging
 using LinearAlgebra
 using Random
 using StaticArrays
-using ClimateMachine.BalanceLaws: BalanceLaw
-import ClimateMachine.BalanceLaws: vars_state, number_state_conservative
-using ClimateMachine.DGMethods:
-    DGModel, init_ode_state, create_conservative_state
+using ClimateMachine.BalanceLaws
+import ClimateMachine.BalanceLaws: vars_state, number_states
+using ClimateMachine.DGMethods: DGModel, init_ode_state, create_state
 using ClimateMachine.SystemSolvers: banded_matrix, banded_matrix_vector_product!
 using ClimateMachine.DGMethods.NumericalFluxes:
     RusanovNumericalFlux,
@@ -167,10 +166,16 @@ let
                         atol = 100 * eps(FT),
                     ))
 
-                    big_Q =
-                        create_conservative_state(BigAdvectionDiffusion(), grid)
-                    big_dQ =
-                        create_conservative_state(BigAdvectionDiffusion(), grid)
+                    big_Q = create_state(
+                        BigAdvectionDiffusion(),
+                        grid,
+                        Conservative(),
+                    )
+                    big_dQ = create_state(
+                        BigAdvectionDiffusion(),
+                        grid,
+                        Conservative(),
+                    )
 
                     big_Q .= NaN
                     big_dQ .= NaN

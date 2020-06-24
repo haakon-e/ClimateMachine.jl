@@ -1,6 +1,13 @@
 using StaticArrays
 using ClimateMachine.VariableTemplates
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws:
+    BalanceLaw,
+    Conservative,
+    Auxiliary,
+    Gradient,
+    GradientFlux,
+    GradientLaplacian,
+    Hyperdiffusive
 import ClimateMachine.BalanceLaws:
     vars_state,
     flux_first_order!,

@@ -23,38 +23,8 @@ given a float type `FT`.
 """
 function vars_state end
 
-"""
-    vars_state(::L, ::GradientLaplacian, FT)
-
-a tuple of symbols containing the transformed variables
-of which gradients of laplacian are computed, they must
-be a subset of `vars_state`, given a float type `FT`.
-"""
-vars_state(::BalanceLaw, ::GradientLaplacian, FT) = @vars()
-
-"""
-    vars_state(::L, ::Hyperdiffusive, FT)
-
-a tuple of symbols containing the hyperdiffusive variables
-given a float type `FT`.
-"""
-vars_state(::BalanceLaw, ::Hyperdiffusive, FT) = @vars()
-
-"""
-    vars_state(::L, ::UpwardIntegrals, FT)
-
-a tuple of symbols containing variables to be integrated
-along a vertical stack, given a float type `FT`.
-"""
-vars_state(::BalanceLaw, ::UpwardIntegrals, FT) = @vars()
-
-"""
-    vars_state(::L, ::DownwardIntegrals, FT)
-
-a tuple of symbols containing variables to be integrated
-along a vertical stack, in reverse, given a float type `FT`.
-"""
-vars_state(::BalanceLaw, ::DownwardIntegrals, FT) = @vars()
+# Fallback: no variables
+vars_state(::BalanceLaw, ::AbstractStateType, FT) = @vars()
 
 """
     init_state_conservative!(
@@ -292,21 +262,11 @@ Compute reverse indefinite integral along stack.
 function reverse_indefinite_stack_integral! end
 
 # Internal methods
-number_state_conservative(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Conservative(), FT))
-number_state_auxiliary(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Auxiliary(), FT))
-number_state_gradient(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Gradient(), FT))
-number_state_gradient_flux(m::BalanceLaw, FT) =
-    varsize(vars_state(m, GradientFlux(), FT))
-num_gradient_laplacian(m::BalanceLaw, FT) =
-    varsize(vars_state(m, GradientLaplacian(), FT))
-num_hyperdiffusive(m::BalanceLaw, FT) =
-    varsize(vars_state(m, Hyperdiffusive(), FT))
-num_integrals(m::BalanceLaw, FT) = varsize(vars_state(m, UpwardIntegrals(), FT))
-num_reverse_integrals(m::BalanceLaw, FT) =
-    varsize(vars_state(m, DownwardIntegrals(), FT))
+number_states(m::BalanceLaw, st::AbstractStateType, FT) =
+    varsize(vars_state(m, st, FT))
+
+rank_multiplier(st::AbstractStateType) = 1
+rank_multiplier(st::GradientLaplacian) = 3
 
 ### split explicit functions
 function initialize_states! end

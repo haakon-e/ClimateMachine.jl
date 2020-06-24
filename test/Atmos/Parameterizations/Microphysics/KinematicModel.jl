@@ -86,7 +86,8 @@ const ice_param_set = param_set.microphys_param_set.ice
 const rain_param_set = param_set.microphys_param_set.rain
 const snow_param_set = param_set.microphys_param_set.snow
 
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws:
+    BalanceLaw, Gradient, GradientFlux, Hyperdiffusive
 
 import ClimateMachine.BalanceLaws:
     vars_state,

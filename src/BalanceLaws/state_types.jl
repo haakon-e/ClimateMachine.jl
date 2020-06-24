@@ -1,4 +1,4 @@
-#### AbstractStateType
+#### State types
 
 export AbstractStateType,
     Conservative,

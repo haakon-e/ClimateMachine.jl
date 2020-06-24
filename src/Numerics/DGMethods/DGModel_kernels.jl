@@ -52,12 +52,12 @@ Computational kernel: Evaluate the volume integrals on right-hand side of a
     @uniform begin
         N = polyorder
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        nhyperviscstate = num_hyperdiffusive(balance_law, FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
 
         Nq = N + 1
 
@@ -198,13 +198,13 @@ Computational kernel: Evaluate the volume integrals on right-hand side of a
                     fill!(local_flux, -zero(eltype(local_flux)))
                     flux_first_order!(
                         balance_law,
-                        Grad{vars_state_conservative(balance_law, FT)}(
+                        Grad{vars_state(balance_law, Conservative(), FT)}(
                             local_flux,
                         ),
-                        Vars{vars_state_conservative(balance_law, FT)}(
+                        Vars{vars_state(balance_law, Conservative(), FT)}(
                             local_state_conservative,
                         ),
-                        Vars{vars_state_auxiliary(balance_law, FT)}(
+                        Vars{vars_state(balance_law, Auxiliary(), FT)}(
                             local_state_auxiliary,
                         ),
                         t,
@@ -225,13 +225,13 @@ Computational kernel: Evaluate the volume integrals on right-hand side of a
                     fill!(local_flux, -zero(eltype(local_flux)))
                     flux_first_order!(
                         balance_law,
-                        Grad{vars_state_conservative(balance_law, FT)}(
+                        Grad{vars_state(balance_law, Conservative(), FT)}(
                             local_flux,
                         ),
-                        Vars{vars_state_conservative(balance_law, FT)}(
+                        Vars{vars_state(balance_law, Conservative(), FT)}(
                             local_state_conservative,
                         ),
-                        Vars{vars_state_auxiliary(balance_law, FT)}(
+                        Vars{vars_state(balance_law, Auxiliary(), FT)}(
                             local_state_auxiliary,
                         ),
                         t,
@@ -328,12 +328,12 @@ end
     @uniform begin
         N = polyorder
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        nhyperviscstate = num_hyperdiffusive(balance_law, FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
 
         Nq = N + 1
 
@@ -549,11 +549,11 @@ Computational kernel: Evaluate the surface integrals on right-hand side of a
     @uniform begin
         N = polyorder
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        nhyperviscstate = num_hyperdiffusive(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
 
         if dim == 1
             Np = (N + 1)
@@ -844,11 +844,11 @@ end
         N = polyorder
 
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        ngradstate = number_state_gradient(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        ngradstate = number_states(balance_law, Gradient(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
         Nq = N + 1
 
@@ -1022,11 +1022,11 @@ end
         N = polyorder
 
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        ngradstate = number_state_gradient(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        ngradstate = number_states(balance_law, Gradient(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
         Nq = N + 1
 
@@ -1202,11 +1202,11 @@ end
     @uniform begin
         N = polyorder
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        ngradstate = number_state_gradient(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        ngradstate = number_states(balance_law, Gradient(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
         if dim == 1
             Np = (N + 1)
@@ -1483,8 +1483,8 @@ end
 ) where {dim, polyorder}
     N = polyorder
     FT = eltype(state_auxiliary)
-    num_state_auxiliary = number_state_auxiliary(balance_law, FT)
-    num_state_conservative = number_state_conservative(balance_law, FT)
+    num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
+    num_state_conservative = number_states(balance_law, Conservative(), FT)
 
     Nq = N + 1
     Nqk = dim == 2 ? 1 : Nq
@@ -1538,7 +1538,7 @@ See [`BalanceLaw`](@ref) for usage.
 ) where {dim, polyorder}
     N = polyorder
     FT = eltype(state_auxiliary)
-    num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+    num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
     Nq = N + 1
     Nqk = dim == 2 ? 1 : Nq
@@ -1587,8 +1587,8 @@ Update the auxiliary state array
     activedofs,
 ) where {dim, N}
     FT = eltype(state_conservative)
-    num_state_conservative = number_state_conservative(balance_law, FT)
-    num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+    num_state_conservative = number_states(balance_law, Conservative(), FT)
+    num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
     Nq = N + 1
 
@@ -1648,9 +1648,9 @@ end
     activedofs,
 ) where {dim, N}
     FT = eltype(state_conservative)
-    num_state_conservative = number_state_conservative(balance_law, FT)
-    num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-    num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+    num_state_conservative = number_states(balance_law, Conservative(), FT)
+    num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+    num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
     Nq = N + 1
 
@@ -1726,9 +1726,9 @@ See [`BalanceLaw`](@ref) for usage.
 ) where {dim, N, nvertelem}
     @uniform begin
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
-        nout = num_integrals(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
+        nout = number_states(balance_law, UpwardIntegrals(), FT)
 
         Nq = N + 1
         Nqj = dim == 2 ? 1 : Nq
@@ -1849,7 +1849,7 @@ end
 
         Nq = N + 1
         Nqj = dim == 2 ? 1 : Nq
-        nout = num_reverse_integrals(balance_law, FT)
+        nout = number_states(balance_law, DownwardIntegrals(), FT)
 
         # note that k is the second not 4th index (since this is scratch memory and k
         # needs to be persistent across threads)
@@ -1972,7 +1972,7 @@ end
     @uniform begin
         N = polyorder
         FT = eltype(Qhypervisc_grad)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
 
         Nq = N + 1
 
@@ -2063,7 +2063,7 @@ end
     @uniform begin
         N = polyorder
         FT = eltype(Qhypervisc_grad)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
 
         Nq = N + 1
 
@@ -2144,7 +2144,7 @@ end
     @uniform begin
         N = polyorder
         FT = eltype(Qhypervisc_grad)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
 
         if dim == 1
             Np = (N + 1)
@@ -2256,10 +2256,10 @@ end
         N = polyorder
 
         FT = eltype(Qhypervisc_grad)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        nhyperviscstate = num_hyperdiffusive(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
         ngradtransformstate = num_state_conservative
 
         Nq = N + 1
@@ -2384,10 +2384,10 @@ end
         N = polyorder
 
         FT = eltype(Qhypervisc_grad)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        nhyperviscstate = num_hyperdiffusive(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
         ngradtransformstate = num_state_conservative
 
         Nq = N + 1
@@ -2494,10 +2494,10 @@ end
     @uniform begin
         N = polyorder
         FT = eltype(Qhypervisc_grad)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        ngradlapstate = num_gradient_laplacian(balance_law, FT)
-        nhyperviscstate = num_hyperdiffusive(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        ngradlapstate = number_states(balance_law, GradientLaplacian(), FT)
+        nhyperviscstate = number_states(balance_law, Hyperdiffusive(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
         ngradtransformstate = num_state_conservative
 
         if dim == 1
@@ -2658,9 +2658,9 @@ end
 ) where {dim, N}
     @uniform begin
         FT = eltype(state_conservative)
-        num_state_conservative = number_state_conservative(balance_law, FT)
-        num_state_gradient_flux = number_state_gradient_flux(balance_law, FT)
-        num_state_auxiliary = number_state_auxiliary(balance_law, FT)
+        num_state_conservative = number_states(balance_law, Conservative(), FT)
+        num_state_gradient_flux = number_states(balance_law, GradientFlux(), FT)
+        num_state_auxiliary = number_states(balance_law, Auxiliary(), FT)
 
         Nq = N + 1
 

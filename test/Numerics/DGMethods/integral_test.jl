@@ -11,7 +11,7 @@ using Printf
 using LinearAlgebra
 using Logging
 
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws
 
 import ClimateMachine.BalanceLaws:
     vars_state,

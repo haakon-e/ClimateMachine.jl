@@ -1,10 +1,12 @@
 using StaticArrays
 using ClimateMachine.VariableTemplates
 using ClimateMachine.DGMethods: nodal_update_auxiliary_state!
-using ClimateMachine.BalanceLaws: BalanceLaw
+using ClimateMachine.BalanceLaws:
+    BalanceLaw, Conservative, Auxiliary, Gradient, GradientFlux
 
 import ClimateMachine.BalanceLaws:
     vars_state,
+    number_states,
     flux_first_order!,
     flux_second_order!,
     source!,
@@ -14,9 +16,7 @@ import ClimateMachine.BalanceLaws:
     update_auxiliary_state!,
     init_state_conservative!,
     boundary_state!,
-    wavespeed,
-    number_state_conservative,
-    number_state_gradient
+    wavespeed
 
 using ClimateMachine.Mesh.Geometry: LocalGeometry
 using ClimateMachine.DGMethods.NumericalFluxes:
@@ -299,7 +299,7 @@ function boundary_state!(
         diff⁺.σ = diff⁻.σ
     elseif bctype == 2 # Neumann with data
         FT = eltype(diff⁺)
-        ngrad = number_state_gradient(m, FT)
+        ngrad = number_states(m, Gradient(), FT)
         ∇state = Grad{vars_state(m, Gradient(), FT)}(similar(
             parent(diff⁺),
             Size(3, ngrad),
@@ -310,7 +310,7 @@ function boundary_state!(
         # compute the diffusive flux using the boundary state
     elseif bctype == 4 # zero Neumann
         FT = eltype(diff⁺)
-        ngrad = number_state_gradient(m, FT)
+        ngrad = number_states(m, Gradient(), FT)
         ∇state = Grad{vars_state(m, Gradient(), FT)}(similar(
             parent(diff⁺),
             Size(3, ngrad),
@@ -361,7 +361,7 @@ function boundary_flux_second_order!(
         flux_second_order!(m, F, state⁻, diff⁻, hyperdiff⁻, aux⁻, t)
     elseif bctype == 2 # Neumann data
         FT = eltype(diff⁺)
-        ngrad = number_state_gradient(m, FT)
+        ngrad = number_states(m, Gradient(), FT)
         ∇state = Grad{vars_state(m, Gradient(), FT)}(similar(
             parent(diff⁺),
             Size(3, ngrad),
