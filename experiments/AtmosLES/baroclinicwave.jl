@@ -158,7 +158,7 @@ end
 function config_baroclinicwave(FT, N, resolution, xmax, ymax, zmax)
 
     ics = init_baroclinicwave!     # Initial conditions
-    C_smag = FT(0.23)     # Smagorinsky coefficient
+    C_smag = FT(0.30)     # Smagorinsky coefficient
     
     # Assemble source components
     source = (
@@ -244,7 +244,7 @@ function main()
     # DG polynomial order
     N = 4
     # Domain resolution and size
-    Δx = FT(4e5) 
+    Δx = FT(1e5) 
     Δy = FT(7.5e4)
     Δz = FT(1.25e3)
 
@@ -270,7 +270,8 @@ function main()
         driver_config,
         init_on_cpu = true,
         Courant_number = CFLmax,
-        diffdir = HorizontalDirection(), ### Set only Horizontal viscosity component
+        ### Diffusion Direction Keyword for Horizontal Dimension
+        diffdir = HorizontalDirection(), 
         CFL_direction = VerticalDirection(), 
     )
     dgn_config = config_diagnostics(driver_config, FT)
@@ -285,8 +286,7 @@ function main()
         nothing
     end
     
-    ### TODO: Filter in VerticalDirection() only ? 
-    filterorder = 32
+    filterorder = 16
     filter = ExponentialFilter(solver_config.dg.grid, 0, filterorder)
     cbfilter = GenericCallbacks.EveryXSimulationSteps(1) do
         Filters.apply!(
@@ -311,7 +311,7 @@ function main()
     Σρ₀ = sum(ρ₀ .* M)
     Σρe₀ = sum(ρe₀ .* M)
     cb_check_cons =
-        GenericCallbacks.EveryXSimulationSteps(3000) do (init = false)
+        GenericCallbacks.EveryXSimulationSteps(1000) do (init = false)
             Q = solver_config.Q
             δρ = (sum(Q.ρ .* M) - Σρ₀) / Σρ₀
             δρe = (sum(Q.ρe .* M) .- Σρe₀) ./ Σρe₀
