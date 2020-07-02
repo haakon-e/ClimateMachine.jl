@@ -1,5 +1,5 @@
 using ClimateMachine
-ClimateMachine.cli()
+ClimateMachine.init()
 
 using ClimateMachine.Atmos
 using ClimateMachine.ConfigTypes
@@ -10,6 +10,7 @@ using ClimateMachine.Mesh.Filters
 using ClimateMachine.Mesh.Grids
 using ClimateMachine.ODESolvers
 using ClimateMachine.Thermodynamics
+using ClimateMachine.TurbulenceClosures
 using ClimateMachine.VariableTemplates
 
 using CLIMAParameters
