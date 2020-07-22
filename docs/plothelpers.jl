@@ -1,6 +1,6 @@
 
-export_plot(z, all_data, ϕ_all, filename, ylabel; xlabel) = nothing
-export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel) = nothing
+export_plot(z, all_data, ϕ_all, filename, ylabel; xlabel, horiz_layout) = nothing
+export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel; horiz_layout) = nothing
 
 """
     plot_friendly_name(ϕ)
@@ -23,7 +23,15 @@ end
 Export plot of all variables, or all
 available time-steps in `all_data`.
 """
-function export_plot(z, all_data, ϕ_all, filename, ylabel; xlabel = nothing)
+function export_plot(
+    z,
+    all_data,
+    ϕ_all,
+    filename,
+    ylabel;
+    xlabel = nothing,
+    horiz_layout = false,
+)
     ϕ_all isa Tuple || (ϕ_all = (ϕ_all,))
     p = plot()
     for n in 0:(length(keys(all_data)) - 1)
@@ -31,10 +39,18 @@ function export_plot(z, all_data, ϕ_all, filename, ylabel; xlabel = nothing)
             ϕ_string = String(ϕ)
             ϕ_name = plot_friendly_name(ϕ_string)
             ϕ_data = all_data[n][ϕ_string][:]
-            if !isnothing(xlabel)
-                plot!(ϕ_data, z, xlabel = xlabel, ylabel = ylabel)
+            if !horiz_layout
+                if !isnothing(xlabel)
+                    plot!(ϕ_data, z, xlabel = xlabel, ylabel = ylabel)
+                else
+                    plot!(ϕ_data, z, xlabel = ϕ_name, ylabel = ylabel)
+                end
             else
-                plot!(ϕ_data, z, xlabel = ϕ_name, ylabel = ylabel)
+                if !isnothing(xlabel)
+                    plot!(z, ϕ_data, xlabel = ylabel, ylabel = xlabel)
+                else
+                    plot!(z, ϕ_data, xlabel = ylabel, ylabel = ϕ_name)
+                end
             end
         end
     end
@@ -54,6 +70,7 @@ function export_plot(
     filename,
     ylabel;
     xlabel = nothing,
+    horiz_layout = false,
 )
     ϕ_all isa Tuple || (ϕ_all = (ϕ_all,))
     p = plot()
@@ -62,10 +79,18 @@ function export_plot(
             ϕ_string = String(ϕ)
             ϕ_name = plot_friendly_name(ϕ_string)
             ϕ_data = data[ϕ_string][:]
-            if !isnothing(xlabel)
-                plot!(ϕ_data, z, xlabel = xlabel, ylabel = ylabel)
+            if !horiz_layout
+                if !isnothing(xlabel)
+                    plot!(ϕ_data, z, xlabel = xlabel, ylabel = ylabel)
+                else
+                    plot!(ϕ_data, z, xlabel = ϕ_name, ylabel = ylabel)
+                end
             else
-                plot!(ϕ_data, z, xlabel = ϕ_name, ylabel = ylabel)
+                if !isnothing(xlabel)
+                    plot!(z, ϕ_data, xlabel = ylabel, ylabel = xlabel)
+                else
+                    plot!(z, ϕ_data, xlabel = ylabel, ylabel = ϕ_name)
+                end
             end
         end
     end
@@ -73,18 +98,29 @@ function export_plot(
 end
 
 """
-    export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel)
+    export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel; horiz_layout)
 
 Export plot of all variables in `all_data`
 """
-function export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel)
+function export_plot_snapshot(
+    z,
+    all_data,
+    ϕ_all,
+    filename,
+    ylabel;
+    horiz_layout = false,
+)
     ϕ_all isa Tuple || (ϕ_all = (ϕ_all,))
     p = plot()
     for ϕ in ϕ_all
         ϕ_string = String(ϕ)
         ϕ_name = plot_friendly_name(ϕ_string)
         ϕ_data = all_data[ϕ_string][:]
-        plot!(ϕ_data, z, xlabel = ϕ_name, ylabel = ylabel)
+        if !horiz_layout
+            plot!(ϕ_data, z, xlabel = ϕ_name, ylabel = ylabel)
+        else
+            plot!(z, ϕ_data, ylabel = ϕ_name, xlabel = ylabel)
+        end
     end
     savefig(filename)
 end
