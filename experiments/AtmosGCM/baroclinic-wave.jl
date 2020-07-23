@@ -172,7 +172,7 @@ function config_baroclinic_wave(FT, poly_order, resolution)
         moisture = DryModel(),
         #moisture = EquilMoist{FT}(),
         source = (Gravity(), Coriolis()),
-        init_state_conservative = init_baroclinic_wave!,
+        init_state_prognostic = init_baroclinic_wave!,
     )
 
     config = ClimateMachine.AtmosGCMConfiguration(

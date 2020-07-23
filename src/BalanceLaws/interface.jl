@@ -34,7 +34,7 @@ vars_state(::BalanceLaw, ::AbstractStateType, FT) = @vars()
       coords,
       args...)
 
-Initialize the conservative state variables at ``t = 0``
+Initialize the prognostic state variables at ``t = 0``
 """
 function init_state_prognostic! end
 
@@ -88,7 +88,7 @@ function flux_second_order! end
         t::Real
     )
 
-Compute non-conservative source terms in balance law equation
+Compute non-prognostic source terms in balance law equation
 """
 function source! end
 
@@ -222,7 +222,7 @@ function update_auxiliary_state_gradient! end
 """
     integral_load_auxiliary_state!
 
-Specify how to compute integrands. Can be functions of the conservative state and auxiliary variables.
+Specify how to compute integrands. Can be functions of the prognostic state and auxiliary variables.
 """
 function integral_load_auxiliary_state! end
 
