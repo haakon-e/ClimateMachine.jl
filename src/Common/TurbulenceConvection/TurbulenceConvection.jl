@@ -123,6 +123,7 @@ function integral_load_auxiliary_state!(
     integ::Vars,
     state::Vars,
     aux::Vars,
+    i::UpwardIntegrals,
 )
     return nothing
 end
@@ -132,6 +133,7 @@ function integral_set_auxiliary_state!(
     bl::BalanceLaw,
     aux::Vars,
     integ::Vars,
+    i::UpwardIntegrals,
 )
     return nothing
 end

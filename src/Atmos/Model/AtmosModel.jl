@@ -52,11 +52,8 @@ import ClimateMachine.BalanceLaws:
     init_state_prognostic!,
     update_auxiliary_state!,
     indefinite_stack_integral!,
-    reverse_indefinite_stack_integral!,
     integral_load_auxiliary_state!,
-    integral_set_auxiliary_state!,
-    reverse_integral_load_auxiliary_state!,
-    reverse_integral_set_auxiliary_state!
+    integral_set_auxiliary_state!
 
 import ClimateMachine.DGMethods:
     LocalGeometry,
@@ -571,8 +568,26 @@ function update_auxiliary_state!(
     state_auxiliary = dg.state_auxiliary
 
     if number_states(m, UpwardIntegrals(), FT) > 0
-        indefinite_stack_integral!(dg, m, Q, state_auxiliary, t, elems)
-        reverse_indefinite_stack_integral!(dg, m, Q, state_auxiliary, t, elems)
+        indefinite_stack_integral!(
+            dg,
+            m,
+            Q,
+            state_auxiliary,
+            t,
+            UpwardIntegrals(),
+            elems,
+        )
+    end
+    if number_states(m, DownwardIntegrals(), FT) > 0
+        indefinite_stack_integral!(
+            dg,
+            m,
+            Q,
+            state_auxiliary,
+            t,
+            DownwardIntegrals(),
+            elems,
+        )
     end
 
     nodal_update_auxiliary_state!(
@@ -613,31 +628,39 @@ function integral_load_auxiliary_state!(
     integ::Vars,
     state::Vars,
     aux::Vars,
+    i::UpwardIntegrals,
 )
-    integral_load_auxiliary_state!(m.radiation, integ, state, aux)
-    integral_load_auxiliary_state!(m.turbconv, m, integ, state, aux)
+    integral_load_auxiliary_state!(m.radiation, integ, state, aux, i)
+    integral_load_auxiliary_state!(m.turbconv, m, integ, state, aux, i)
 end
 
-function integral_set_auxiliary_state!(m::AtmosModel, aux::Vars, integ::Vars)
-    integral_set_auxiliary_state!(m.radiation, aux, integ)
-    integral_set_auxiliary_state!(m.turbconv, m, aux, integ)
+function integral_set_auxiliary_state!(
+    m::AtmosModel,
+    aux::Vars,
+    integ::Vars,
+    i::UpwardIntegrals,
+)
+    integral_set_auxiliary_state!(m.radiation, aux, integ, i)
+    integral_set_auxiliary_state!(m.turbconv, m, aux, integ, i)
 end
 
-function reverse_integral_load_auxiliary_state!(
+function integral_load_auxiliary_state!(
     m::AtmosModel,
     integ::Vars,
     state::Vars,
     aux::Vars,
+    i::DownwardIntegrals,
 )
-    reverse_integral_load_auxiliary_state!(m.radiation, integ, state, aux)
+    integral_load_auxiliary_state!(m.radiation, integ, state, aux, i)
 end
 
-function reverse_integral_set_auxiliary_state!(
+function integral_set_auxiliary_state!(
     m::AtmosModel,
     aux::Vars,
     integ::Vars,
+    i::DownwardIntegrals,
 )
-    reverse_integral_set_auxiliary_state!(m.radiation, aux, integ)
+    integral_set_auxiliary_state!(m.radiation, aux, integ, i)
 end
 
 

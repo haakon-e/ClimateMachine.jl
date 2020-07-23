@@ -49,8 +49,6 @@ the following methods, which are computed locally at each nodal point:
 | [`compute_gradient_flux!`](@ref) | specify how to compute gradient fluxes. can be a functions of the gradient state, the conservative state, and auxiliary variables.|
 | [`integral_load_auxiliary_state!`](@ref) | specify how to compute integrands. can be functions of the conservative state and auxiliary variables. |
 | [`integral_set_auxiliary_state!`](@ref) | specify which auxiliary variables are used to store the output of the integrals. |
-| [`reverse_integral_load_auxiliary_state!`](@ref) | specify auxiliary variables need their integrals reversed. |
-| [`reverse_integral_set_auxiliary_state!`](@ref) | specify which auxiliary variables are used to store the output of the reversed integrals. |
 | [`update_auxiliary_state!`](@ref) | perform any updates to the auxiliary variables needed at the beginning of each time-step. Can be used to solve non-linear equations, calculate integrals, and apply filters. |
 | [`update_auxiliary_state_gradient!`](@ref) | same as above, but after computing gradients and gradient fluxes in case these variables are needed during the update. |
 

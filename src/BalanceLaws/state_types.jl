@@ -7,6 +7,7 @@ export AbstractStateType,
     GradientFlux,
     GradientLaplacian,
     Hyperdiffusive,
+    UpDownIntegrals,
     UpwardIntegrals,
     DownwardIntegrals
 
@@ -62,15 +63,22 @@ Hyper-diffusive variables
 struct Hyperdiffusive <: AbstractStateType end
 
 """
-    UpwardIntegrals <: AbstractStateType
+    UpDownIntegrals <: AbstractStateType
+
+Super-type for UpwardIntegrals and DownwardIntegrals
+"""
+abstract type UpDownIntegrals <: AbstractStateType end
+
+"""
+    UpwardIntegrals <: UpDownIntegrals
 
 Variables computed in upward integrals
 """
-struct UpwardIntegrals <: AbstractStateType end
+struct UpwardIntegrals <: UpDownIntegrals end
 
 """
-    DownwardIntegrals <: AbstractStateType
+    DownwardIntegrals <: UpDownIntegrals
 
 Variables computed in downward integrals
 """
-struct DownwardIntegrals <: AbstractStateType end
+struct DownwardIntegrals <: UpDownIntegrals end
