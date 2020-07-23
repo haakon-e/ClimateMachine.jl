@@ -36,6 +36,8 @@ This is an abstract type representing a generic linear solver.
 """
 abstract type AbstractSystemSolver end
 
+abstract type AbstractNonlinearSolver <: AbstractSystemSolver end
+
 """
     AbstractIterativeSystemSolver
 
