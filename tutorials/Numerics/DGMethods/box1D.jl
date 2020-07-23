@@ -138,13 +138,16 @@ function run_box1D(
     init_q::FT,
     amplitude::FT,
     velo::FT,
-    tmar_filter::Bool,
-    cutoff_filter::Bool,
-    exp_filter::Bool,
     plot_name::String;
+    tmar_filter::Bool = false,
+    cutoff_filter::Bool = false,
+    exp_filter::Bool = false,
+    boyd_filter::Bool = false,
     cutoff_param::Int = 1,
     exp_param_1::Int = 0,
     exp_param_2::Int = 32,
+    boyd_param_1::Int = 0,
+    boyd_param_2::Int = 32,
 )
     N_poly = N_poly;
     nelem = 128;
@@ -216,7 +219,6 @@ function run_box1D(
         )
         all_vars = OrderedDict(state_vars..., aux_vars...)
         push!(all_data, all_vars)
-        @info("AQQ")
         step[1] += 1
         nothing
     end;
@@ -255,6 +257,17 @@ function run_box1D(
             )
             nothing
         end
+    # exponential filter
+    cb_boyd =
+        GenericCallbacks.EveryXSimulationSteps(filter_freq) do (init = false)
+            Filters.apply!(
+                solver_config.Q,
+                (:q,),
+                solver_config.dg.grid,
+                BoydVandevenFilter(solver_config.dg.grid, boyd_param_1, boyd_param_2)
+            )
+            nothing
+        end
 
     user_cb_arr = [cb_output,]
     if tmar_filter
@@ -265,6 +278,9 @@ function run_box1D(
     end
     if exp_filter
         push!(user_cb_arr, cb_exp)
+    end
+    if boyd_filter
+        push!(user_cb_arr, cb_boyd)
     end
     user_cb = (user_cb_arr...,)
 
@@ -283,19 +299,24 @@ function run_box1D(
 end
 
 # run a bunch of box model simulations to see how different filters work
-run_box1D(2, 0.0, 1.0, 1.0, false, false, false, "box_1D_2_no_filter.pdf")
-run_box1D(4, 0.0, 1.0, 1.0, false, false, false, "box_1D_4_no_filter.pdf")
-run_box1D(8, 0.0, 1.0, 1.0, false, false, false, "box_1D_8_no_filter.pdf")
+run_box1D(2, 0.0, 1.0, 1.0, "box_1D_2_no_filter.pdf")
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_no_filter.pdf")
+run_box1D(8, 0.0, 1.0, 1.0, "box_1D_8_no_filter.pdf")
 
-run_box1D(4, 0.0, 1.0, 1.0, true, false, false, "box_1D_4_tmar.pdf")
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_tmar.pdf", tmar_filter = true)
 
-run_box1D(4, 0.0, 1.0, 1.0, false, true, false, "box_1D_4_cutoff_1.pdf"; cutoff_param = 1)
-run_box1D(4, 0.0, 1.0, 1.0, false, true, false, "box_1D_4_cutoff_3.pdf"; cutoff_param = 3)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_cutoff_1.pdf", cutoff_filter = true, cutoff_param = 1)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_cutoff_3.pdf", cutoff_filter = true, cutoff_param = 3)
 
-run_box1D(4, 0.0, 1.0, 1.0, false, false, true, "box_1D_4_exp_0_32.pdf"; exp_param_1 = 0, exp_param_2 = 32)
-run_box1D(4, 0.0, 1.0, 1.0, false, false, true, "box_1D_4_exp_1_32.pdf"; exp_param_1 = 1, exp_param_2 = 32)
-run_box1D(4, 0.0, 1.0, 1.0, false, false, true, "box_1D_4_exp_1_8.pdf"; exp_param_1 = 1, exp_param_2 = 8)
-run_box1D(4, 0.0, 1.0, 1.0, false, false, true, "box_1D_4_exp_1_4.pdf"; exp_param_1 = 1, exp_param_2 = 4)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_exp_0_32.pdf", exp_filter = true, exp_param_1 = 0, exp_param_2 = 32)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_exp_1_32.pdf", exp_filter = true, exp_param_1 = 1, exp_param_2 = 32)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_exp_1_8.pdf", exp_filter = true, exp_param_1 = 1, exp_param_2 = 8)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_exp_1_4.pdf", exp_filter = true, exp_param_1 = 1, exp_param_2 = 4)
 
-run_box1D(4, 0.0, 1.0, 1.0, true, false, true, "box_1D_4_tmar_exp_1_8.pdf"; exp_param_1 = 1, exp_param_2 = 8)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_boyd_0_32.pdf", boyd_filter = true, boyd_param_1 = 0, boyd_param_2 = 32)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_boyd_1_32.pdf", boyd_filter = true, boyd_param_1 = 1, boyd_param_2 = 32)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_boyd_1_8.pdf", boyd_filter = true, boyd_param_1 = 1, boyd_param_2 = 8)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_boyd_1_4.pdf", boyd_filter = true, boyd_param_1 = 1, boyd_param_2 = 4)
 
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_tmar_exp_1_8.pdf", exp_filter = true, tmar_filter = true,  exp_param_1 = 1, exp_param_2 = 8)
+run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_tmar_boyd_1_8.pdf", boyd_filter = true, tmar_filter = true,  boyd_param_1 = 1, boyd_param_2 = 8)
