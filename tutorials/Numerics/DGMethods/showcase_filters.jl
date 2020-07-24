@@ -5,7 +5,7 @@
 
 using ClimateMachine
 const clima_dir = dirname(dirname(pathof(ClimateMachine)));
-include(joinpath(clima_dir, "tutorials", "Numerics", "DGMEthods", "Box1D.jl"))
+include(joinpath(clima_dir, "tutorials", "Numerics", "DGMethods", "Box1D.jl"))
 
 # The unfiltered result of the box advection test for order 4 polynomial is:
 run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_no_filter.pdf")
