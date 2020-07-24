@@ -1,6 +1,8 @@
 
-export_plot(z, all_data, ϕ_all, filename, ylabel; xlabel, horiz_layout) = nothing
-export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel; horiz_layout) = nothing
+export_plot(z, all_data, ϕ_all, filename, ylabel; xlabel, horiz_layout) =
+    nothing
+export_plot_snapshot(z, all_data, ϕ_all, filename, ylabel; horiz_layout) =
+    nothing
 
 """
     plot_friendly_name(ϕ)
