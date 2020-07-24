@@ -3,7 +3,9 @@
 # available in the CliMA codebase in a 1 dimensional box advection setup.
 # See [Filters API](https://clima.github.io/ClimateMachine.jl/latest/APIs/Numerics/Meshes/Mesh/#Filters-1) for filters interface details.
 
-include(joinpath("tutorials", "Numerics", "DGMEthods", "Box1D.jl"))
+using ClimateMachine
+const clima_dir = dirname(dirname(pathof(ClimateMachine)));
+include(joinpath(clima_dir, "tutorials", "Numerics", "DGMEthods", "Box1D.jl"))
 
 # The unfiltered result of the box advection test for order 4 polynomial is:
 run_box1D(4, 0.0, 1.0, 1.0, "box_1D_4_no_filter.pdf")
