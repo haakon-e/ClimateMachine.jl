@@ -132,12 +132,21 @@ function SolverConfiguration(
             numerical_flux_first_order,
             numerical_flux_second_order,
             numerical_flux_gradient,
+            fill_nan = Settings.debug_init,
             diffusion_direction = diffdir,
             modeldata = modeldata,
         )
 
+        if Settings.debug_init
+            # TODO: dump dg.state_auxiliary
+        end
+
         @info @sprintf("Initializing %s", driver_config.name,)
         Q = init_ode_state(dg, FT(0), init_args...; init_on_cpu = init_on_cpu)
+
+        if Settings.debug_init
+            # TODO: dump Q
+        end
     end
     update_auxiliary_state!(dg, bl, Q, FT(0), dg.grid.topology.realelems)
 

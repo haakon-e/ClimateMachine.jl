@@ -66,6 +66,7 @@ Base.@kwdef mutable struct ClimateMachine_Settings
     log_level::String = "INFO"
     disable_custom_logger::Bool = false
     output_dir::String = "output"
+    debug_init::Bool = false
     integration_testing::Bool = false
     array_type::Type = Array
 end
@@ -257,6 +258,11 @@ function parse_commandline(
                 get(ENV, "CLIMATEMACHINE_SETTINGS_OUTPUT_DIR", Settings.output_dir)
             end
         end
+        "--debug-init"
+        help = "fill state arrays with NaNs and dump them post-initialization"
+        action = :store_const
+        constant = true
+        default = get_setting(:debug_init, defaults, global_defaults)
         "--integration-testing"
         help = "enable integration testing"
         action = :store_const
@@ -328,6 +334,8 @@ Recognized keyword arguments are:
         disable using a global custom logger for ClimateMachine
 - `output_dir::String = "output"`: (path)
         absolute or relative path to output data directory
+- `debug_init::Bool = false`:
+        fill state arrays with NaNs and dump them post-initialization
 - `integration_testing::Bool = false`:
         enable integration_testing
 
