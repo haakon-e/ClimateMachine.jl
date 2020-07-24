@@ -163,3 +163,63 @@ function (lin::LinBESolver)(Q, Qhat, α, p, t)
     end
     linearsolve!(lin.factors, lin.solver, Q, Qhat, p, t)
 end
+
+struct NonLinearBackwardEulerSolver{NLS, LS}
+    nlsolver::NLS
+    lsolver::LS
+    isadjustable::Bool
+    function NonLinearBackwardEulerSolver(nlsolver, lsolver; isadjustable = false)
+        NLS = typeof(nlsolver)
+        LS = typeof(lsolver)
+        return new{NLS, LS}(nlsolver, lsolver, isadjustable)
+    end
+end
+
+mutable struct NonLinBESolver{FT, FAC, NLS, LS, F} <: AbstractBackwardEulerSolver
+    α::FT
+    nlsolver::NLS
+    lsolver::LS
+    isadjustable::Bool
+    rhs!::F
+end
+
+Δt_is_adjustable(nlsolver::NonLinBESolver) = nlsolver.isadjustable
+
+function setup_backward_Euler_solver(
+    nlsolver::NonLinearBackwardEulerSolver,
+    Q,
+    α,
+    rhs!,
+)
+    FT = eltype(α)
+    NonLinBESolver(
+        α,
+        nlsolver.nlsolver,
+        nlsolver.lsolver,
+        nlsolver.isadjustable,
+        rhs!,
+    )
+end
+
+function update_backward_Euler_solver!(nlsolver::NonLinBESolver, Q, α)
+    # TODO: What else needs to be updated? The linear solver?
+    # Should the `NonLinBESolver` object also point to
+    # a corresponding `LinBESolver` for the linear problem?
+    nlsolver.α = α
+end
+
+function (nlsolver::NonLinBESolver)(Q, Qhat, α, p, t)
+    if nlsolver.α != α
+        @assert nlsolver.isadjustable
+        update_backward_Euler_solver!(nlsolver, Q, α)
+    end
+
+    nonlinearsolve!(
+        nlsolver.nlsolver,
+        nlsolver.lsolver,
+        Q,
+        Qhat,
+        p,
+        t,
+    )
+end
