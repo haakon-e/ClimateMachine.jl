@@ -1,7 +1,7 @@
 #!/usr/bin/env julia --project
 using ClimateMachine
 ClimateMachine.init(parse_clargs = true)
-
+using DelimitedFiles
 using ClimateMachine.Atmos
 using ClimateMachine.Orientations
 using ClimateMachine.ConfigTypes
@@ -10,10 +10,12 @@ using ClimateMachine.DGMethods.NumericalFluxes
 using ClimateMachine.GenericCallbacks
 using ClimateMachine.ODESolvers
 using ClimateMachine.Mesh.Filters
+using ClimateMachine.Mesh.Grids
 using ClimateMachine.Thermodynamics
 using ClimateMachine.TurbulenceClosures
+using ClimateMachine.TurbulenceStatistics
 using ClimateMachine.VariableTemplates
-
+using MPI
 using Distributions
 using StaticArrays
 using Test
@@ -21,7 +23,8 @@ using DocStringExtensions
 using LinearAlgebra
 
 using CLIMAParameters
-using CLIMAParameters.Planet: cp_d, MSLP, grav, LH_v0
+using CLIMAParameters.Planet: R_d, cv_d, cp_d, MSLP, grav, LH_v0
+using CLIMAParameters.Atmos.SubgridScale: C_smag
 struct EarthParameterSet <: AbstractEarthParameterSet end
 const param_set = EarthParameterSet()
 
@@ -84,7 +87,7 @@ function init_greenvortex!(bl, state, aux, (x, y, z), t)
     e_pot = FT(0)# potential energy
     Pinf = 101325
     Uzero = FT(100)
-    p = Pinf + (ρ * Uzero / 16) * (2 + cos(z)) * (cos(x) + cos(y))
+    p = Pinf + (ρ * Uzero^2 / 16) * (2 + cos(z)) * (cos(x) + cos(y))
     u = Uzero * sin(x) * cos(y) * cos(z)
     v = -Uzero * cos(x) * sin(y) * cos(z)
     e_kin = 0.5 * (u^2 + v^2)
@@ -120,7 +123,6 @@ function config_greenvortex(
     ymin,
     zmin,
 )
-
     ode_solver = ClimateMachine.ExplicitSolverType(
         solver_method = LSRK144NiegemannDiehlBusch,
     )
@@ -182,7 +184,7 @@ function main()
     zmin = FT(-pi)
     t0 = FT(0)
     timeend = FT(0.1)
-    CFL = FT(1.8)
+    CFL = FT(0.9)
 
     driver_config = config_greenvortex(
         FT,
@@ -202,11 +204,21 @@ function main()
         init_on_cpu = true,
         Courant_number = CFL,
     )
-    dgn_config = config_diagnostics(driver_config)
-
+    #dgn_config = config_diagnostics(driver_config)
+    energy_file = "/home/yassine/Kinetic_energy.txt"
+    E_init = average_kinetic_energy(solver_config, driver_config)
+    iter = FT(0.01)
+    cb_energy = cb_kinetic_energy(
+        solver_config,
+        driver_config,
+        iter,
+        E_init,
+        energy_file,
+    )
     result = ClimateMachine.invoke!(
         solver_config;
-        diagnostics_config = dgn_config,
+        #diagnostics_config = dgn_config,
+        user_callbacks = (cb_energy,),
         check_euclidean_distance = true,
     )
 
