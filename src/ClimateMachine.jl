@@ -40,6 +40,7 @@ include(joinpath("Diagnostics", "Debug", "StateCheck.jl"))
 include(joinpath("Utilities", "Checkpoint", "Checkpoint.jl"))
 include(joinpath("Driver", "Callbacks", "Callbacks.jl"))
 include(joinpath("Driver", "Driver.jl"))
+include(joinpath("Common", "TurbulenceStatistics", "TurbulenceStatistics.jl"))
 
 
 end
