@@ -4,11 +4,12 @@ function average_kinetic_energy_and_dissipation_writer(
     E_0,
     iter,
     outfile,
+    nor,
 )
     mpicomm = MPI.COMM_WORLD
     mpirank = MPI.Comm_rank(mpicomm)
     if mpirank == 0
-        E_k0 = average_kinetic_energy(solver_config, driver_config)
+        E_k0 = average_kinetic_energy(solver_config, driver_config, nor)
         dE = -(E_k0 - E_0) / iter
         open(outfile, "a") do io
             writedlm(io, [E_k0 dE])
@@ -17,7 +18,14 @@ function average_kinetic_energy_and_dissipation_writer(
     end
 end
 
-function cb_kinetic_energy(solver_config, driver_config, iter, E_0, outfile)
+function cb_kinetic_energy(
+    solver_config,
+    driver_config,
+    iter,
+    E_0,
+    outfile,
+    nor,
+)
     cb = GenericCallbacks.EveryXSimulationTime(iter) do
         E_0 = average_kinetic_energy_and_dissipation_writer(
             solver_config,
@@ -25,20 +33,21 @@ function cb_kinetic_energy(solver_config, driver_config, iter, E_0, outfile)
             E_0,
             iter,
             outfile,
+            nor,
         )
     end
     return cb
 end
 
-function average_kinetic_energy(solver_config, driver_config)
+function average_kinetic_energy(solver_config, driver_config, nor)
     Q = solver_config.Q
     # Volume geometry information
     vgeo = driver_config.grid.vgeo
     # Unpack prognostic vars
     u₀ = Q.ρu ./ Q.ρ
-    u_0 = u₀[:, 1, :] ./ 100
-    v_0 = u₀[:, 2, :] ./ 100
-    w_0 = u₀[:, 3, :] ./ 100
+    u_0 = u₀[:, 1, :] ./ nor
+    v_0 = u₀[:, 2, :] ./ nor
+    w_0 = u₀[:, 3, :] ./ nor
     mm = size(u_0, 2)
     M = vgeo[:, Grids._M, 1:mm]
     SM = sum(M)

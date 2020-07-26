@@ -206,7 +206,7 @@ function main()
     )
     #dgn_config = config_diagnostics(driver_config)
     energy_file = "/home/yassine/Kinetic_energy.txt"
-    E_init = average_kinetic_energy(solver_config, driver_config)
+    E_init = average_kinetic_energy(solver_config, driver_config, FT(100))
     iter = FT(0.01)
     cb_energy = cb_kinetic_energy(
         solver_config,
@@ -214,6 +214,7 @@ function main()
         iter,
         E_init,
         energy_file,
+        FT(100),
     )
     result = ClimateMachine.invoke!(
         solver_config;
